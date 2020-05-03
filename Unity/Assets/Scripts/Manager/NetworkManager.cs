@@ -15,6 +15,7 @@ public class NetworkManager : MonoBehaviour
     #region Actions
     public static Action<PlayerData> OnPlayerConnected;
     public static Action<PlayerData> OnPlayerDisconnected;
+    public static Action<string> OnMatchmakingConnected;
     public static Action OnPlayerNameAccepted;
     #endregion
 
@@ -62,6 +63,8 @@ public class NetworkManager : MonoBehaviour
             manager.Close();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         });
+        //MatchMaking
+        manager.Socket.On("matchmaking-connected", (Socket socket, Packet packet, object[] args) => { OnMatchmakingConnected?.Invoke(args[0].ToString());});
 
         manager.Open();
     }
