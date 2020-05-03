@@ -13,7 +13,7 @@ class Matchmaking {
     const newRoom = new Room(random.generate(10), masterClient);
     this.rooms.push(newRoom);
     
-    return newRoom.id;
+    return newRoom;
   }
 
   findRoom(id) {
