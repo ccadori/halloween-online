@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public string ID;
     public string Name;
     public bool isMine = true;
+    public bool Alive = true;
     public static Player Instance;
 
     private void Awake()
