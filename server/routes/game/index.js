@@ -9,6 +9,7 @@ const connect = (client, room) => {
 }
 
 const disconnect = function () {
+  this.room.removeClient(this.client.id);
   console.log("User has disconnected from game", this.client.id);
 }
 

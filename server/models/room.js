@@ -17,7 +17,7 @@ class Room {
   emitAll (event, message, exceptionId) {
     this.players.map(p => {
       if (p.id === exceptionId) return;
-      p.client.emit(event, message);
+      p.emit(event, message);
     });
   }
 
