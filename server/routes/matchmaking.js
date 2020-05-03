@@ -9,8 +9,8 @@ module.exports = function (client) {
     const room = matchmaking.addRoom(client);
 
     // Removing listeners
-    // client.off('matchmaking-create');
-    // client.off('matchmaking-join');
+    client.removeAllListeners('matchmaking-create');
+    client.removeAllListeners('matchmaking-join');
 
     gameRoutes(client, room);
 
@@ -24,8 +24,8 @@ module.exports = function (client) {
       return client.emit('matchmaking-error', 'Room not found');
     
     // Removing listeners
-    // client.off('matchmaking-create');
-    // client.off('matchmaking-join');
+    client.removeAllListeners('matchmaking-create');
+    client.removeAllListeners('matchmaking-join');
 
     gameRoutes(client, room);
 
