@@ -5,13 +5,12 @@ const matchmaking = new Matchmaking();
 
 module.exports = function (client) {
   client.on('matchmaking-create', payload => {
+    client.name = payload.name? payload.name : client.id;
     const room = matchmaking.addRoom(client);
 
     // Removing listeners
     // client.off('matchmaking-create');
     // client.off('matchmaking-join');
-    
-    client.name = payload.name? payload.name : client.id;
 
     gameRoutes(client, room);
 
@@ -20,7 +19,7 @@ module.exports = function (client) {
 
   client.on('matchmaking-join', payload => {
     const room = matchmaking.findRoom(payload.id);
-
+    
     if (!room) 
       return client.emit('matchmaking-error', 'Room not found');
     

@@ -29,12 +29,12 @@ class Room {
     this.emitAll('player-disconnected', clientId);
   }
 
-  addClient (client, name) {
+  addClient (client) {
     if (this.players.find(p => p.id === client.id))
       return false;
     
     // Updating other players about the new one
-    const payload = JSON.stringify({ name, id: client.id });
+    const payload = JSON.stringify({ name: client.name, id: client.id });
     this.emitAll('player-connected', payload, client.id);
     
     // Updating new player about the other ones
@@ -42,12 +42,7 @@ class Room {
       client.emit('player-connected', JSON.stringify({ id: p.id, name: p.name }));
     });
 
-    this.players.push({ 
-      id: client.id, 
-      name, 
-      client, 
-      ready: false 
-    });
+    this.players.push(client);
 
     return true;
   }
