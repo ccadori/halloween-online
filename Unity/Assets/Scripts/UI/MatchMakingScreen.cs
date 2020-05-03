@@ -13,20 +13,30 @@ public class MatchMakingScreen : MonoBehaviour
     [SerializeField] Canvas gameCanvas;
     [SerializeField] Canvas InitializationCanvas;
 
+    [SerializeField] Canvas loadingCanvas;
+
     private void OnEnable()
     {
         NetworkManager.OnMatchmakingConnected += OnMatchmakingConnected;
+        NetworkManager.OnMatchmakingError += OnMatchmakingError;
     }
 
     private void OnDisable()
     {
         NetworkManager.OnMatchmakingConnected -= OnMatchmakingConnected;
+        NetworkManager.OnMatchmakingError -= OnMatchmakingError;
     }
 
     private void OnMatchmakingConnected(string roomID)
     {
         InitializationCanvas.enabled = false;
         gameCanvas.enabled = true;
+        loadingCanvas.enabled = false;
+    }
+
+    void OnMatchmakingError(string error)
+    {
+        loadingCanvas.enabled = false;
     }
 
     public void OnRoomIDChange(string newID)
@@ -45,11 +55,13 @@ public class MatchMakingScreen : MonoBehaviour
     public void JoinRoom()
     {
         NetworkManager.SendEmitMessage("matchmaking-join", JsonUtility.ToJson(new JoinRoomEmit(Player.Instance.Name, roomID)));
+        loadingCanvas.enabled = true;
     }
 
     public void HostRoom()
     {
         NetworkManager.SendEmitMessage("matchmaking-create", JsonUtility.ToJson(new HostRoomEmit(Player.Instance.Name)));
+        loadingCanvas.enabled = true;
     }
 }
 
