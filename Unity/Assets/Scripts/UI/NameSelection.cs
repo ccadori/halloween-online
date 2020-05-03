@@ -10,26 +10,10 @@ public class NameSelection : MonoBehaviour
     [SerializeField] GameObject loginScreen;
     [SerializeField] GameObject matchMakingScreen;
 
-    private void OnEnable()
-    {
-        NetworkManager.OnPlayerNameAccepted += OnPlayerNameAccepted;
-    }
-
-    private void OnDisable()
-    {
-        NetworkManager.OnPlayerNameAccepted -= OnPlayerNameAccepted;
-    }
-
     public void SendName()
     {
         //NetworkManager.SendEmitMessage("player-name", NameInputField.text);
         Player.Instance.Name = NameInputField.text;
-        loginScreen.SetActive(false);
-        matchMakingScreen.SetActive(true);
-    }
-
-    void OnPlayerNameAccepted()
-    {
         loginScreen.SetActive(false);
         matchMakingScreen.SetActive(true);
     }

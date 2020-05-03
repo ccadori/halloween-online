@@ -16,7 +16,7 @@ public class NetworkManager : MonoBehaviour
     public static Action<PlayerData> OnPlayerConnected;
     public static Action<PlayerData> OnPlayerDisconnected;
     public static Action<string> OnMatchmakingConnected;
-    public static Action OnPlayerNameAccepted;
+    public static Action<string> OnMatchmakingError;
     public static Action OnNight;
     public static Action OnDay;
     public static Action<PlayerRoles> OnReceiveRole;
@@ -48,7 +48,11 @@ public class NetworkManager : MonoBehaviour
         manager = new SocketManager(new Uri("http://localhost:3000/socket.io/"), options);
         manager.Socket.On(SocketIOEventTypes.Connect, OnServerConnect);
         manager.Socket.On(SocketIOEventTypes.Disconnect, OnServerDisconnect);
-        manager.Socket.On(SocketIOEventTypes.Error, OnError);
+        manager.Socket.On(SocketIOEventTypes.Error, (Socket socket, Packet packet, object[] args) => {
+            OnError(socket, packet, args);
+            OnMatchmakingError?.Invoke("Network Error");
+            manager.Close();
+        });
         manager.Socket.On("player-connected", (Socket socket, Packet packet, object[] args) => 
         {
             PlayerData data = JsonUtility.FromJson<PlayerData>(args[0].ToString());
@@ -60,7 +64,6 @@ public class NetworkManager : MonoBehaviour
             Debug.Log("Player Disconnected with ID " + data.id);
             OnPlayerDisconnected?.Invoke(data);
         });
-        manager.Socket.On("player-name-accepted", (Socket socket, Packet packet, object[] args) => { OnPlayerNameAccepted?.Invoke(); });
         manager.Socket.On("player-name-rejected", (Socket socket, Packet packet, object[] args) =>
         {
             manager.Close();
@@ -68,6 +71,7 @@ public class NetworkManager : MonoBehaviour
         });
         //MatchMaking
         manager.Socket.On("matchmaking-connected", (Socket socket, Packet packet, object[] args) => { OnMatchmakingConnected?.Invoke(args[0].ToString());});
+        manager.Socket.On("matchmaking-error", (Socket socket, Packet packet, object[] args) => { OnMatchmakingError?.Invoke(args[0].ToString()); });
         //Roles
         manager.Socket.On("player-receive-role", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke((PlayerRoles)int.Parse(args[0].ToString()));});
 
