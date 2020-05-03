@@ -10,6 +10,8 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] GameObject NetworkPlayerPrefab;
 
+    public string RoomID;
+
     public static PlayerManager Instance;
 
     private void Awake()
@@ -29,6 +31,7 @@ public class PlayerManager : MonoBehaviour
     {
         NetworkManager.OnPlayerConnected += OnPlayerConnected;
         NetworkManager.OnPlayerDisconnected += OnPlayerDisconnected;
+        NetworkManager.OnMatchmakingConnected += OnMatchmakingConnected;
 
     }
 
@@ -36,7 +39,13 @@ public class PlayerManager : MonoBehaviour
     {
         NetworkManager.OnPlayerConnected -= OnPlayerConnected;
         NetworkManager.OnPlayerDisconnected -= OnPlayerDisconnected;
+        NetworkManager.OnMatchmakingConnected -= OnMatchmakingConnected;
 
+    }
+
+    private void OnMatchmakingConnected(string roomID)
+    {
+        RoomID = roomID;
     }
 
     private void OnPlayerConnected(PlayerData data)
