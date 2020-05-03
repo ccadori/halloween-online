@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public string ID;
     public string Name;
     public bool isMine = true;
+    public bool Alive = true;
+    public PlayerRoles Role;
     public static Player Instance;
 
     private void Awake()
@@ -18,5 +20,20 @@ public class Player : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    private void OnEnable()
+    {
+        NetworkManager.OnReceiveRole += onReceiveRole;
+    }
+
+    private void OnDisable()
+    {
+        NetworkManager.OnReceiveRole -= onReceiveRole;
+    }
+
+    void onReceiveRole(PlayerRoles role)
+    {
+        Role = role;
     }
 }

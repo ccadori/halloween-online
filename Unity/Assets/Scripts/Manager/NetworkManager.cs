@@ -17,6 +17,9 @@ public class NetworkManager : MonoBehaviour
     public static Action<PlayerData> OnPlayerDisconnected;
     public static Action<string> OnMatchmakingConnected;
     public static Action OnPlayerNameAccepted;
+    public static Action OnNight;
+    public static Action OnDay;
+    public static Action<PlayerRoles> OnReceiveRole;
     #endregion
 
 
@@ -65,6 +68,8 @@ public class NetworkManager : MonoBehaviour
         });
         //MatchMaking
         manager.Socket.On("matchmaking-connected", (Socket socket, Packet packet, object[] args) => { OnMatchmakingConnected?.Invoke(args[0].ToString());});
+        //Roles
+        manager.Socket.On("player-receive-role", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke((PlayerRoles)int.Parse(args[0].ToString()));});
 
         manager.Open();
     }
