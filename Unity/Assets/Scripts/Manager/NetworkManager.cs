@@ -17,6 +17,7 @@ public class NetworkManager : MonoBehaviour
     public static Action<PlayerData> OnPlayerDisconnected;
     public static Action<string> OnMatchmakingConnected;
     public static Action OnPlayerNameAccepted;
+    public static Action OnNight;
     #endregion
 
 
