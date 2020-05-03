@@ -15,7 +15,6 @@ public class NetworkManager : MonoBehaviour
     #region Actions
     public static Action<PlayerData> OnPlayerConnected;
     public static Action<PlayerData> OnPlayerDisconnected;
-    public static Action<PlayerPositionData> OnPlayerPosition;
     public static Action OnPlayerNameAccepted;
     #endregion
 
@@ -56,11 +55,6 @@ public class NetworkManager : MonoBehaviour
             PlayerData data = new PlayerData(args[0].ToString(), "");
             Debug.Log("Player Disconnected with ID " + data.id);
             OnPlayerDisconnected?.Invoke(data);
-        });
-        manager.Socket.On("player-position", (Socket socket, Packet packet, object[] args) =>
-        {
-            PlayerPositionData data = JsonUtility.FromJson<PlayerPositionData>(args[0].ToString());
-            OnPlayerPosition?.Invoke(data);
         });
         manager.Socket.On("player-name-accepted", (Socket socket, Packet packet, object[] args) => { OnPlayerNameAccepted?.Invoke(); });
         manager.Socket.On("player-name-rejected", (Socket socket, Packet packet, object[] args) =>
@@ -116,20 +110,5 @@ public class PlayerData
     {
         this.id = id;
         this.name = name;
-    }
-}
-
-[System.Serializable]
-public class PlayerPositionData
-{
-    public string id;
-    public Vector3 position;
-    public Quaternion rotation;
-
-    public PlayerPositionData(string id, Vector3 position, Quaternion rotation)
-    {
-        this.id = id;
-        this.position = position;
-        this.rotation = rotation;
     }
 }
