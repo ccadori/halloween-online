@@ -1,6 +1,9 @@
+const roles = require('../utils/roles');
+
 class Room {
   constructor(id, masterPlayer) {
     this.master = masterPlayer;
+    this.started = false;
     this.id = id;
     this.players = [];
 
@@ -8,6 +11,8 @@ class Room {
     this.removeClient = this.removeClient.bind(this);
     this.addClient = this.addClient.bind(this);
     this.findPlayer = this.findPlayer.bind(this);
+    this.generatePlayersRoles = this.generatePlayersRoles.bind(this);
+    this.start = this.start.bind(this);
 
     // FIXME: add masterplayer to tests so we cant take this condition out
     if (masterPlayer)
@@ -51,7 +56,19 @@ class Room {
     return this.players.find(p => p.id === clientId);
   }
 
-  
+  generatePlayersRoles() {
+    const generatedRoles = roles.generateRoles(this.players.length);
+    
+    for (let i = 0; i < this.players.length; i++) {
+      this.players[i].role = generatedRoles[i];
+      this.players[i].emit("role-set", JSON.stringify({ id: generatedRoles[i].id }));
+    }
+  }
+
+  start() {
+    this.generatePlayersRoles();
+    this.started = true;
+  }
 };
 
 module.exports = Room;
