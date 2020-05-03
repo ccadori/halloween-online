@@ -1,8 +1,10 @@
-const room = require('../../utils/room');
+const Room = require('../../models/room');
+
+console.log(Room);
 
 describe('room', () => {
   it('Should add a new client', () => {
-    const currentRoom = new room();
+    const currentRoom = new Room();
     currentRoom.addClient({ id: 1 }, 'test');
 
     expect(currentRoom.players.length).toBe(1);
@@ -27,7 +29,7 @@ describe('room', () => {
       }
     };
 
-    const currentRoom = new room();
+    const currentRoom = new Room();
     currentRoom.addClient(client1, 'test1');
     currentRoom.addClient(client2, 'test2');
 
@@ -44,7 +46,7 @@ describe('room', () => {
   });
 
   it('Should find the client', () => {
-    const currentRoom = new room();
+    const currentRoom = new Room();
     currentRoom.addClient({ id: 1 }, 'test');
     const client = currentRoom.findPlayer(1);
 
@@ -53,7 +55,7 @@ describe('room', () => {
   });
 
   it('Should remove a client', () => {
-    const currentRoom = new room();
+    const currentRoom = new Room();
     currentRoom.addClient({ id: 1 }, 'test');
     currentRoom.removeClient(1);
 
@@ -64,7 +66,7 @@ describe('room', () => {
     let eventCount = 0;
     const emit = () => { eventCount++ };
 
-    const currentRoom = new room();
+    const currentRoom = new Room();
     currentRoom.addClient({ id: 1, emit }, 'test');
     currentRoom.addClient({ id: 2, emit }, 'test');
     currentRoom.addClient({ id: 3, emit }, 'test');
@@ -78,7 +80,7 @@ describe('room', () => {
   it('Should emit to all except one', () => {
     let clientIds = [];
 
-    const currentRoom = new room();
+    const currentRoom = new Room();
     currentRoom.addClient({ id: 1, emit: () => clientIds.push(1) }, 'test');
     currentRoom.addClient({ id: 2, emit: () => clientIds.push(2) }, 'test');
     currentRoom.addClient({ id: 3, emit: () => clientIds.push(3) }, 'test');
@@ -93,7 +95,7 @@ describe('room', () => {
   it('Should emit to all the right event', () => {
     let event = {};
 
-    const currentRoom = new room();
+    const currentRoom = new Room();
     currentRoom.addClient({
       id: 1,
       emit: (e, message) => event = { e, message }

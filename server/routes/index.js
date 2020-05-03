@@ -1,21 +1,15 @@
-const room = require('../utils/room');
-
-const currentRoom = new room();
-
 const routes = [
-  require('./room'),
-  require('./position'),
+  require('./matchmaking'),
 ];
 
 const connect = (client) => {
-  console.log("User has connected", client.id);
-  routes.map(r => r.bind({ currentRoom })(client));
+  console.log("User has connected from lobby", client.id);
+  routes.map(r => r(client));
   client.on('disconnect', disconnect.bind(client));
 }
 
 const disconnect = function () {
-  currentRoom.removeClient(this.id);
-  console.log("User has disconnected", this.id);
+  console.log("User has disconnected from lobby", this.id);
 }
 
 module.exports = connect
