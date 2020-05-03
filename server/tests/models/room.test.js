@@ -1,11 +1,9 @@
 const Room = require('../../models/room');
 
-console.log(Room);
-
 describe('room', () => {
   it('Should add a new client', () => {
     const currentRoom = new Room();
-    currentRoom.addClient({ id: 1 }, 'test');
+    currentRoom.addClient({ id: 1, name: 'test' });
 
     expect(currentRoom.players.length).toBe(1);
     expect(currentRoom.players[0].name).toBe('test');
@@ -15,7 +13,8 @@ describe('room', () => {
   it('Should emit connected events when a player connect', () => {
     let p1Event = {};
     const client1 = { 
-      id: 1, 
+      id: 1,
+      name: 'test1', 
       emit: (event, message) => { 
         p1Event = { event, message: JSON.parse(message) } 
       }
@@ -24,14 +23,15 @@ describe('room', () => {
     let p2Event = {};
     const client2 = { 
       id: 2, 
+      name: 'test2',
       emit: (event, message) => { 
         p2Event = { event, message: JSON.parse(message) } 
       }
     };
 
     const currentRoom = new Room();
-    currentRoom.addClient(client1, 'test1');
-    currentRoom.addClient(client2, 'test2');
+    currentRoom.addClient(client1);
+    currentRoom.addClient(client2);
 
     expect(p1Event).toBeDefined();
     expect(p2Event).toBeDefined();

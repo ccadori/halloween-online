@@ -50,6 +50,8 @@ class Room {
   findPlayer (clientId) {
     return this.players.find(p => p.id === clientId);
   }
+
+  
 };
 
 module.exports = Room;
