@@ -10,8 +10,6 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] GameObject NetworkPlayerPrefab;
 
-
-
     public static PlayerManager Instance;
 
     private void Awake()
@@ -19,8 +17,6 @@ public class PlayerManager : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
-            Screen.fullScreen = false;
-            Screen.SetResolution(800, 600, false);
         }
         else if(Instance != this)
         {
