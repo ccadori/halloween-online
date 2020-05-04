@@ -18,9 +18,8 @@ public class PortraitLoader : MonoBehaviour
         NetworkManager.OnReceiveRole -= onReceiveRole;
     }
 
-    private void onReceiveRole(PlayerRoles role)
+    private void onReceiveRole(RoleData roleData)
     {
-        Debug.Log("Portraits/" + (int)role);
-        Image.sprite = Resources.Load<Sprite>("Portraits/" + (int)role);
+        Image.sprite = Resources.Load<Sprite>("Portraits/" + roleData.id);
     }
 }

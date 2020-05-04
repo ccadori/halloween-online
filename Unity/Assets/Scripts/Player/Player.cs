@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
@@ -32,8 +30,8 @@ public class Player : MonoBehaviour
         NetworkManager.OnReceiveRole -= onReceiveRole;
     }
 
-    void onReceiveRole(PlayerRoles role)
+    void onReceiveRole(RoleData roleData)
     {
-        Role = role;
+        Role = (PlayerRoles)int.Parse(roleData.id);
     }
 }

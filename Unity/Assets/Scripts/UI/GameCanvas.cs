@@ -7,9 +7,9 @@ public class GameCanvas : MonoBehaviour
 {
     [SerializeField] CanvasGroup playerListCanvasGroup;
     [SerializeField] PlayerListEntryUI playerListEntryPrefab;
-    [SerializeField] List<PlayerListEntryUI> night_playerList;
+    [SerializeField] List<PlayerListEntryUI> night_playerList = new List<PlayerListEntryUI>();
     [SerializeField] Transform night_PlayerListParent;
-    [SerializeField] List<PlayerListEntryUI> day_playerList;
+    [SerializeField] List<PlayerListEntryUI> day_playerList = new List<PlayerListEntryUI>();
     [SerializeField] Transform day_PlayerListParent;
 
     [Header("Night")]
@@ -43,6 +43,7 @@ public class GameCanvas : MonoBehaviour
             PlayerListEntryUI newPlayerListEntry = Instantiate(playerListEntryPrefab, night_PlayerListParent) as PlayerListEntryUI;
             newPlayerListEntry.NameText.text = player.Value.Name;
             newPlayerListEntry.Button.onClick.AddListener(() => ConfirmAction(player.Value.ID));
+            night_playerList.Add(newPlayerListEntry);
         }
     }
 
@@ -58,6 +59,7 @@ public class GameCanvas : MonoBehaviour
 
     void onNight()
     {
+        populateNightPlayerList();
         day_PlayingCanvasGroup.alpha = 0;
         night_CanvasGroup.alpha = 1;
         night_PlayingCanvasGroup.alpha = 1;
@@ -79,21 +81,23 @@ public class GameCanvas : MonoBehaviour
             PlayerListEntryUI newPlayerListEntry = Instantiate(playerListEntryPrefab, day_PlayerListParent) as PlayerListEntryUI;
             newPlayerListEntry.NameText.text = player.Value.Name;
             newPlayerListEntry.Button.onClick.AddListener(() => confirmVote(player.Value.ID));
+            day_playerList.Add(newPlayerListEntry);
         }
     }
 
     void clearDayPlayerList()
     {
-        for (int i = 0; i < night_playerList.Count; i++)
+        for (int i = 0; i < day_playerList.Count; i++)
         {
-            Destroy(night_playerList[i].gameObject);
+            Destroy(day_playerList[i].gameObject);
         }
 
-        night_playerList.Clear();
+        day_playerList.Clear();
     }
 
     void onDay()
     {
+        populateDayPlayerList();
         night_CanvasGroup.alpha = 0;
         day_PlayingCanvasGroup.alpha = 1;
         day_PlayingCanvasGroup.alpha = 1;

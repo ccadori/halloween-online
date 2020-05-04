@@ -10,8 +10,8 @@ public class MatchMakingScreen : MonoBehaviour
     [SerializeField] Button joinBttn;
 
 
-    [SerializeField] Canvas gameCanvas;
-    [SerializeField] Canvas InitializationCanvas;
+    [SerializeField] Canvas matchMakingCanvas;
+    [SerializeField] Canvas lobbyCanvas;
 
     [SerializeField] Canvas loadingCanvas;
 
@@ -29,8 +29,8 @@ public class MatchMakingScreen : MonoBehaviour
 
     private void OnMatchmakingConnected(string roomID)
     {
-        InitializationCanvas.enabled = false;
-        gameCanvas.enabled = true;
+        matchMakingCanvas.enabled = false;
+        lobbyCanvas.enabled = true;
         loadingCanvas.enabled = false;
     }
 
@@ -55,12 +55,14 @@ public class MatchMakingScreen : MonoBehaviour
     public void JoinRoom()
     {
         NetworkManager.SendEmitMessage("matchmaking-join", JsonUtility.ToJson(new JoinRoomEmit(Player.Instance.Name, roomID)));
+        NetworkManager.Instance.IsHost = false;
         loadingCanvas.enabled = true;
     }
 
     public void HostRoom()
     {
         NetworkManager.SendEmitMessage("matchmaking-create", JsonUtility.ToJson(new HostRoomEmit(Player.Instance.Name)));
+        NetworkManager.Instance.IsHost = true;
         loadingCanvas.enabled = true;
     }
 }
@@ -75,7 +77,7 @@ public class JoinRoomEmit
     public JoinRoomEmit(string name, string roomID)
     {
         Name = name;
-        RoomID = RoomID;
+        RoomID = roomID;
     }
 }
 
