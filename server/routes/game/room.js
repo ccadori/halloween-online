@@ -1,4 +1,12 @@
-module.exports = function (player, room) {
+const Player = require('../../models/player');
+const Room = require('../../models/room');
+
+/**
+ * 
+ * @param {Player} player 
+ * @param {Room} room 
+ */
+const setup = function (player, room) {
   player.client.on('room-start', () => {
     if (player.id !== room.master.id)
       return player.client.emit('room-start-error', 'Permission denied');
@@ -6,3 +14,5 @@ module.exports = function (player, room) {
     room.start();
   });
 }
+
+module.exports = setup;

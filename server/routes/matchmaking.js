@@ -4,7 +4,12 @@ const gameRoutes = require('./game');
 
 const matchmaking = new Matchmaking();
 
-module.exports = function (client) {
+/**
+ * 
+ * @param {any} client 
+ */
+const setup = function (client) {
+  // Creating a new room
   client.on('matchmaking-create', payload => {
     const newPlayer = new Player(client, payload.name || client.id);
     const room = matchmaking.addRoom(newPlayer);
@@ -18,6 +23,7 @@ module.exports = function (client) {
     newPlayer.client.emit('matchmaking-connected', room.id);
   });
 
+  // Joining room
   client.on('matchmaking-join', payload => {
     const room = matchmaking.findRoom(payload.id);
     
@@ -37,3 +43,5 @@ module.exports = function (client) {
     newPlayer.client.emit('matchmaking-connected', room.id);
   });
 };
+
+module.exports = setup;
