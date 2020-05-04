@@ -7,14 +7,14 @@ public class NameSelection : MonoBehaviour
 {
     [SerializeField] InputField NameInputField;
     [SerializeField] Button SendNameButton;
-    [SerializeField] GameObject loginScreen;
-    [SerializeField] GameObject matchMakingScreen;
+    [SerializeField] Canvas loginScreen;
+    [SerializeField] Canvas matchMakingScreen;
 
     public void SendName()
     {
         //NetworkManager.SendEmitMessage("player-name", NameInputField.text);
         Player.Instance.Name = NameInputField.text;
-        loginScreen.SetActive(false);
-        matchMakingScreen.SetActive(true);
+        loginScreen.enabled = false;
+        matchMakingScreen.enabled = true;
     }
 }

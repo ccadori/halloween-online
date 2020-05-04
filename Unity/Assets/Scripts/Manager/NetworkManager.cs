@@ -12,14 +12,17 @@ public class NetworkManager : MonoBehaviour
 
     SocketManager manager;
 
+    public bool IsHost;
+
     #region Actions
     public static Action<PlayerData> OnPlayerConnected;
     public static Action<PlayerData> OnPlayerDisconnected;
     public static Action<string> OnMatchmakingConnected;
     public static Action<string> OnMatchmakingError;
+    public static Action OnRoomStart;
     public static Action OnNight;
     public static Action OnDay;
-    public static Action<PlayerRoles> OnReceiveRole;
+    public static Action<RoleData> OnReceiveRole;
     #endregion
 
 
@@ -72,8 +75,9 @@ public class NetworkManager : MonoBehaviour
         //MatchMaking
         manager.Socket.On("matchmaking-connected", (Socket socket, Packet packet, object[] args) => { OnMatchmakingConnected?.Invoke(args[0].ToString());});
         manager.Socket.On("matchmaking-error", (Socket socket, Packet packet, object[] args) => { OnMatchmakingError?.Invoke(args[0].ToString()); });
+        manager.Socket.On("room-start", (Socket socket, Packet packet, object[] args) => { OnRoomStart?.Invoke(); });
         //Roles
-        manager.Socket.On("player-receive-role", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke((PlayerRoles)int.Parse(args[0].ToString()));});
+        manager.Socket.On("player-set", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke(JsonUtility.FromJson<RoleData>(args[0].ToString()));});
 
         manager.Open();
     }
@@ -85,6 +89,7 @@ public class NetworkManager : MonoBehaviour
 
     void OnServerDisconnect(Socket socket, Packet packet, params object[] args)
     {
+        IsHost = false;
         Debug.Log("Disconnected");
     }
 
@@ -112,7 +117,7 @@ public class NetworkManager : MonoBehaviour
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class PlayerData
 {
     public string id;
@@ -122,5 +127,16 @@ public class PlayerData
     {
         this.id = id;
         this.name = name;
+    }
+}
+
+
+[Serializable]
+public class RoleData
+{
+    public string id;
+    public RoleData(string id)
+    {
+        this.id = id;
     }
 }
