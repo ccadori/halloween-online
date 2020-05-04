@@ -1,9 +1,10 @@
 const Room = require('../../models/room');
+const Player = require('../../models/player');
 
 describe('room', () => {
   it('Should add a new client', () => {
     const currentRoom = new Room();
-    currentRoom.addClient({ id: 1, name: 'test' });
+    currentRoom.addPlayer({ id: 1, name: 'test' });
 
     expect(currentRoom.players.length).toBe(1);
     expect(currentRoom.players[0].name).toBe('test');
@@ -15,8 +16,10 @@ describe('room', () => {
     const client1 = { 
       id: 1,
       name: 'test1', 
-      emit: (event, message) => { 
-        p1Event = { event, message: JSON.parse(message) } 
+      client: { 
+        emit: (event, message) => {
+          p1Event = { event, message: JSON.parse(message) } 
+        }
       }
     };
     
@@ -24,14 +27,16 @@ describe('room', () => {
     const client2 = { 
       id: 2, 
       name: 'test2',
-      emit: (event, message) => { 
-        p2Event = { event, message: JSON.parse(message) } 
+      client: {
+        emit: (event, message) => {
+          p2Event = { event, message: JSON.parse(message) } 
+        }
       }
     };
 
     const currentRoom = new Room();
-    currentRoom.addClient(client1);
-    currentRoom.addClient(client2);
+    currentRoom.addPlayer(client1);
+    currentRoom.addPlayer(client2);
 
     expect(p1Event).toBeDefined();
     expect(p2Event).toBeDefined();
@@ -47,7 +52,7 @@ describe('room', () => {
 
   it('Should find the client', () => {
     const currentRoom = new Room();
-    currentRoom.addClient({ id: 1 }, 'test');
+    currentRoom.addPlayer({ id: 1 }, 'test');
     const client = currentRoom.findPlayer(1);
 
     expect(client).toBeDefined();
@@ -56,8 +61,8 @@ describe('room', () => {
 
   it('Should remove a client', () => {
     const currentRoom = new Room();
-    currentRoom.addClient({ id: 1 }, 'test');
-    currentRoom.removeClient(1);
+    currentRoom.addPlayer({ id: 1 }, 'test');
+    currentRoom.removePlayer(1);
 
     expect(currentRoom.length).toBeFalsy();
   });
@@ -67,9 +72,9 @@ describe('room', () => {
     const emit = () => { eventCount++ };
 
     const currentRoom = new Room();
-    currentRoom.addClient({ id: 1, emit }, 'test');
-    currentRoom.addClient({ id: 2, emit }, 'test');
-    currentRoom.addClient({ id: 3, emit }, 'test');
+    currentRoom.addPlayer({ id: 1, client: { emit } }, 'test');
+    currentRoom.addPlayer({ id: 2, client: { emit } }, 'test');
+    currentRoom.addPlayer({ id: 3, client: { emit } }, 'test');
 
     eventCount = 0;
     currentRoom.emitAll('test');
@@ -81,9 +86,9 @@ describe('room', () => {
     let clientIds = [];
 
     const currentRoom = new Room();
-    currentRoom.addClient({ id: 1, emit: () => clientIds.push(1) }, 'test');
-    currentRoom.addClient({ id: 2, emit: () => clientIds.push(2) }, 'test');
-    currentRoom.addClient({ id: 3, emit: () => clientIds.push(3) }, 'test');
+    currentRoom.addPlayer({ id: 1, client: { emit: () => clientIds.push(1) } }, 'test');
+    currentRoom.addPlayer({ id: 2, client: { emit: () => clientIds.push(2) } }, 'test');
+    currentRoom.addPlayer({ id: 3, client: { emit: () => clientIds.push(3) } }, 'test');
 
     clientIds = [];
     currentRoom.emitAll('test', null, 2);
@@ -96,9 +101,11 @@ describe('room', () => {
     let event = {};
 
     const currentRoom = new Room();
-    currentRoom.addClient({
+    currentRoom.addPlayer({
       id: 1,
-      emit: (e, message) => event = { e, message }
+      client: {
+        emit: (e, message) => event = { e, message }
+      }
     }, 'test');
 
     event = {};
