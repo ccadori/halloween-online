@@ -1,22 +1,29 @@
 const Matchmaking = require('../models/matchmaking');
+const Player = require('../models/player');
 const gameRoutes = require('./game');
 
 const matchmaking = new Matchmaking();
 
-module.exports = function (client) {
+/**
+ * 
+ * @param {any} client 
+ */
+const setup = function (client) {
+  // Creating a new room
   client.on('matchmaking-create', payload => {
-    client.name = payload.name? payload.name : client.id;
-    const room = matchmaking.addRoom(client);
+    const newPlayer = new Player(client, payload.name || client.id);
+    const room = matchmaking.addRoom(newPlayer);
 
     // Removing listeners
-    client.removeAllListeners('matchmaking-create');
-    client.removeAllListeners('matchmaking-join');
+    newPlayer.client.removeAllListeners('matchmaking-create');
+    newPlayer.client.removeAllListeners('matchmaking-join');
 
-    gameRoutes(client, room);
+    gameRoutes(newPlayer, room);
 
-    client.emit('matchmaking-connected', room.id);
+    newPlayer.client.emit('matchmaking-connected', room.id);
   });
 
+  // Joining room
   client.on('matchmaking-join', payload => {
     const room = matchmaking.findRoom(payload.id);
     
@@ -27,11 +34,14 @@ module.exports = function (client) {
     client.removeAllListeners('matchmaking-create');
     client.removeAllListeners('matchmaking-join');
 
-    gameRoutes(client, room);
+    const newPlayer = new Player(client, payload.name || payload.id);
+    gameRoutes(newPlayer, room);
 
-    client.name = payload.name? payload.name : client.id;
+    newPlayer.client.name = payload.name? payload.name : client.id;
 
-    room.addClient(client);
-    client.emit('matchmaking-connected', room.id);
+    room.addPlayer(newPlayer.client);
+    newPlayer.client.emit('matchmaking-connected', room.id);
   });
 };
+
+module.exports = setup;
