@@ -22,15 +22,15 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        NetworkManager.OnReceiveRole += onReceiveRole;
+        NetworkManager.OnReceiveRole += OnReceiveRole;
     }
 
     private void OnDisable()
     {
-        NetworkManager.OnReceiveRole -= onReceiveRole;
+        NetworkManager.OnReceiveRole -= OnReceiveRole;
     }
 
-    void onReceiveRole(RoleData roleData)
+    public void OnReceiveRole(RoleData roleData)
     {
         Role = (PlayerRoles)int.Parse(roleData.id);
     }
