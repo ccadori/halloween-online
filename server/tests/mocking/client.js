@@ -10,6 +10,7 @@ class Client {
 
     this.emitToServer = this.eventEmitter.emit;
     this.on = this.eventEmitter.on;
+    this.removeAllListeners = this.eventEmitter.removeAllListeners;
   }
 
   emit(event, payload) {

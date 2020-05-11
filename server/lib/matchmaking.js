@@ -30,7 +30,7 @@ class Matchmaking {
    * @param {Number} id 
    */
   findMatch(id) {
-    return this.matches.find(r => r.id === id);
+    return this.matches.find(r => r.id == id);
   }
 
   /**
@@ -39,8 +39,7 @@ class Matchmaking {
    * @param {Object} payload 
    */
   onCreateRoom(client, payload) {
-    const { name: playersName } = payload;
-    const newPlayer = new Player(client, playersName || client.id);
+    const newPlayer = new Player(client, payload.name);
     const match = this.addMatch(newPlayer);
 
     this.onClientExit(client);
@@ -54,16 +53,15 @@ class Matchmaking {
    * @param {Object} payload 
    */
   onJoinRoom(client, payload) {
-    const { id: roomId, name: playersName } = payload;
-    const match = this.findMatch(roomId);
+    const match = this.findMatch(payload.roomId);
     
     if (!match) 
       return client.emit('matchmaking-error', 'Room not found');
     
     this.onClientExit(client);
-
-    match.addPlayer(new Player(client, playersName || client.id));
     
+    const newPlayer = new Player(client, payload.name)
+    match.addPlayer(newPlayer);
     newPlayer.client.emit('matchmaking-connected', match.id);
   }
 
@@ -72,8 +70,6 @@ class Matchmaking {
    * @param {Object} client 
    */
   onClientEnter(client) {
-    console.info("New client connected");
-
     client.on('matchmaking-join', (payload) => this.onJoinRoom(client, payload));
     client.on('matchmaking-create', (payload) => this.onCreateRoom(client, payload));
   }

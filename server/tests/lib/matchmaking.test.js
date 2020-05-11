@@ -27,4 +27,30 @@ describe("Matchmaking", () => {
 
     expect(match.id).toBeDefined();
   });
+
+  it ("Should receive match id", () => {
+    const matchmaking = new Matchmaking();
+    const client = new Client();
+    matchmaking.onClientEnter(client);
+
+    client.emitToServer('matchmaking-create', { name: "test" });
+    
+    expect(client.events.length).toBe(1);
+    expect(client.events[0].payload).toBeDefined();
+  });
+
+  it ("Should be able to join a match", () => {
+    const matchmaking = new Matchmaking();
+    const client = new Client();
+    const client2 = new Client();
+    
+    matchmaking.onClientEnter(client);
+    matchmaking.onClientEnter(client2);
+
+    client.emitToServer('matchmaking-create', { name: "test" });
+    const token = client.events[0].payload;
+    client2.emitToServer('matchmaking-join', { name: "test2", roomId: token });
+
+    expect(client2.events.find(e => e.event == 'matchmaking-connected')).toBeDefined();
+  });
 });
