@@ -20,8 +20,8 @@ class Match {
     this.findPlayer = this.findPlayer.bind(this);
     this.generatePlayersRoles = this.generatePlayersRoles.bind(this);
     this.start = this.start.bind(this);
-
-    this.addPlayer(masterPlayer);
+    
+    if (masterPlayer) this.addPlayer(masterPlayer);
   }
   
   /**
