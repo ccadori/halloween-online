@@ -98,7 +98,7 @@ class Match {
   start() {
     this.generatePlayersRoles();
     this.started = true;
-    this.emitToAll('room-start');
+    this.emitToAll('match-start');
     this.cycles.startNight();
   }
 };
