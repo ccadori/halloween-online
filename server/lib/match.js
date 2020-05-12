@@ -20,6 +20,8 @@ class Match {
     this.findPlayer = this.findPlayer.bind(this);
     this.generatePlayersRoles = this.generatePlayersRoles.bind(this);
     this.start = this.start.bind(this);
+    this.onMatchStart = this.onMatchStart.bind(this);
+    this.onPlayerEnter = this.onPlayerEnter.bind(this);
     
     if (masterPlayer) this.addPlayer(masterPlayer);
   }
@@ -69,6 +71,8 @@ class Match {
 
     this.players.push(player);
 
+    this.onPlayerEnter(player);
+
     return true;
   }
 
@@ -100,6 +104,25 @@ class Match {
     this.started = true;
     this.emitToAll('match-start');
     this.cycles.startNight();
+  }
+
+  /**
+   * When client tries to start the match
+   * @param {Player} player 
+   */
+  onMatchStart(player) {
+    if (player !== this.master)
+      player.client.emit('room-start-error');
+
+    this.start();
+  }
+
+  /**
+   * When a new player enter the room
+   * @param {Player} player 
+   */
+  onPlayerEnter(player) {
+    player.client.on('room-start', (payload) => this.onMatchStart(player, payload));
   }
 };
 

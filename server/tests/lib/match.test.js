@@ -84,4 +84,18 @@ describe('room', () => {
     expect(player2.client.events.length).toBe(3);
     expect(player3.client.events.length).toBe(2);
   });
+
+  it("Should start a match", () => {
+    const player = new Player(new Client(), "test");
+    const player2 = new Player(new Client(), "test2");
+    const match = new Match(1, player);
+    
+    match.addPlayer(player2);
+
+    player.client.emitToServer('room-start');
+
+    expect(match.started).toBeTruthy();
+    expect(player.client.events.find(e => e.event === 'match-start')).toBeDefined();
+    expect(player2.client.events.find(e => e.event === 'match-start')).toBeDefined();
+  });
 });
