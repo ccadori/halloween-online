@@ -12,7 +12,7 @@ public class NetworkManager : MonoBehaviour
 
     SocketManager manager;
 
-    public bool IsHost;
+    public bool isHost;
 
     public string url = "http://localhost:3000/socket.io/";
 
@@ -101,7 +101,7 @@ public class NetworkManager : MonoBehaviour
 
     void OnServerDisconnect(Socket socket, Packet packet, params object[] args)
     {
-        IsHost = false;
+        isHost = false;
         Debug.Log("Disconnected");
     }
 

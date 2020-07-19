@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class PlayerListEntryUI : MonoBehaviour
 {
-    public Text NameText;
+    public Text nameText;
     public string playerID;
-    public Button Button;
+    public Button button;
     public GameObject selectionHighlight;
 
     private void OnEnable()
     {
-        Button.onClick.AddListener(()=> { selectPlayer(); });
+        button.onClick.AddListener(()=> { selectPlayer(); });
     }
 
     public void selectPlayer ()

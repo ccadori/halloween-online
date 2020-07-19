@@ -68,10 +68,10 @@ public class GameCanvas : MonoBehaviour
     {
         clearNightPlayerList();
 
-        foreach(KeyValuePair<string, Player> player in PlayerManager.Instance.PlayerList)
+        foreach(KeyValuePair<string, Player> player in PlayerManager.Instance.playerList)
         {
             PlayerListEntryUI newPlayerListEntry = Instantiate(night_PlayerListEntryPrefab, night_PlayerListParent) as PlayerListEntryUI;
-            newPlayerListEntry.NameText.text = player.Value.Name;
+            newPlayerListEntry.nameText.text = player.Value.Name;
             newPlayerListEntry.playerID = player.Key;
             newPlayerListEntry.gameObject.SetActive(true);
             night_playerList.Add(newPlayerListEntry);
@@ -109,10 +109,10 @@ public class GameCanvas : MonoBehaviour
     {
         clearDayPlayerList();
 
-        foreach (KeyValuePair<string, Player> player in PlayerManager.Instance.PlayerList)
+        foreach (KeyValuePair<string, Player> player in PlayerManager.Instance.playerList)
         {
             PlayerListEntryUI newPlayerListEntry = Instantiate(day_PlayerListEntryPrefab, day_PlayerListParent) as PlayerListEntryUI;
-            newPlayerListEntry.NameText.text = player.Value.Name;
+            newPlayerListEntry.nameText.text = player.Value.Name;
             newPlayerListEntry.gameObject.SetActive(true);
             day_playerList.Add(newPlayerListEntry);
         }

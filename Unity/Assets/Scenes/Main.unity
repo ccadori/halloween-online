@@ -372,7 +372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae4fe8785611f9488dd9b561cb8b1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Image: {fileID: 107966205}
+  image: {fileID: 107966205}
 --- !u!1 &112783708
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,7 +924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cdf5931dccef3547a6bc103901d9ba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsHost: 0
+  isHost: 0
   url: http://localhost:3000/socket.io/
 --- !u!4 &273068939
 Transform:
@@ -3764,9 +3764,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f972a5c861364cc4f8b9e1cbc08f3aa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NetworkPlayerPrefab: {fileID: 2344918206892455445, guid: 9f3caa57b066fbe42b1f74adce454b7a,
+  networkPlayerPrefab: {fileID: 2344918206892455445, guid: 9f3caa57b066fbe42b1f74adce454b7a,
     type: 3}
-  RoomID: 
+  roomID: 
 --- !u!4 &1091418113
 Transform:
   m_ObjectHideFlags: 0
@@ -5676,11 +5676,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerListEntry
       objectReference: {fileID: 0}
-    - target: {fileID: 1674205921881162511, guid: 72340ce8b19ea2948a9655a7b4e50e91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6936709782646420346, guid: 72340ce8b19ea2948a9655a7b4e50e91,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6471,8 +6466,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1504063b94d41f8409eca0f1fcfa28df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NameInputField: {fileID: 1746588471}
-  SendNameButton: {fileID: 1838400301}
+  nameInputField: {fileID: 1746588471}
+  sendNameButton: {fileID: 1838400301}
   loginScreen: {fileID: 425503685}
   matchMakingScreen: {fileID: 986191156}
 --- !u!1 &1935510504

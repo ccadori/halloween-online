@@ -60,14 +60,14 @@ public class MatchMakingScreen : MonoBehaviour
     public void JoinRoom()
     {
         NetworkManager.SendEmitMessage("matchmaking-join", JsonUtility.ToJson(new JoinRoomEmit(Player.Instance.Name, roomID)));
-        NetworkManager.Instance.IsHost = false;
+        NetworkManager.Instance.isHost = false;
         loadingCanvas.enabled = true;
     }
 
     public void HostRoom()
     {
         NetworkManager.SendEmitMessage("matchmaking-create", JsonUtility.ToJson(new HostRoomEmit(Player.Instance.Name)));
-        NetworkManager.Instance.IsHost = true;
+        NetworkManager.Instance.isHost = true;
         loadingCanvas.enabled = true;
     }
 }

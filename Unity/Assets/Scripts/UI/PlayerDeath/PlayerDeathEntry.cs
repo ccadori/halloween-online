@@ -9,6 +9,6 @@ public class PlayerDeathEntry : MonoBehaviour
 
     public void SetupInformation(string playerId)
     {
-        playerNameText.text = PlayerManager.Instance.PlayerList[playerId].Name + " morreu por causas desconhecidas";
+        playerNameText.text = PlayerManager.Instance.playerList[playerId].Name + " morreu por causas desconhecidas";
     }
 }
