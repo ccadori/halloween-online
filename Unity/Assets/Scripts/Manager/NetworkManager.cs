@@ -23,9 +23,10 @@ public class NetworkManager : MonoBehaviour
     public static Action<string> OnMatchmakingError;
     public static Action OnMatchStart;
     public static Action OnRoomStartError;
-    public static Action OnNight;
-    public static Action OnDay;
     public static Action<RoleData> OnReceiveRole;
+
+    public static Action OnNightStarted;
+    public static Action OnNightEnded;
     #endregion
 
 
@@ -80,9 +81,8 @@ public class NetworkManager : MonoBehaviour
         manager.Socket.On("matchmaking-error", (Socket socket, Packet packet, object[] args) => { OnMatchmakingError?.Invoke(args[0].ToString()); });
         manager.Socket.On("match-started", (Socket socket, Packet packet, object[] args) => { OnMatchStart?.Invoke(); });
         manager.Socket.On("room-start-error", (Socket socket, Packet packte, object[] args) => { OnRoomStartError?.Invoke(); });
-        
-        //TODO: Implementar night-started
-        //TODO: Implementar night-end
+        manager.Socket.On("night-started", (Socket socket, Packet packet, object[] args) => { OnNightStarted?.Invoke(); });
+        manager.Socket.On("night-ended", (Socket socket, Packet packet, object[] args) => { OnNightEnded?.Invoke(); });
         //Roles
         manager.Socket.On("player-set", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke(JsonUtility.FromJson<RoleData>(args[0].ToString()));});
 

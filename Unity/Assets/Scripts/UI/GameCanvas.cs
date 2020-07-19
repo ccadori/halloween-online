@@ -7,31 +7,31 @@ public class GameCanvas : MonoBehaviour
 {
     [SerializeField] CanvasGroup playerListCanvasGroup;
     [SerializeField] PlayerListEntryUI playerListEntryPrefab;
-    [SerializeField] List<PlayerListEntryUI> night_playerList = new List<PlayerListEntryUI>();
-    [SerializeField] Transform night_PlayerListParent;
-    [SerializeField] List<PlayerListEntryUI> day_playerList = new List<PlayerListEntryUI>();
-    [SerializeField] Transform day_PlayerListParent;
 
     [Header("Night")]
     [SerializeField] CanvasGroup night_CanvasGroup;
     [SerializeField] CanvasGroup night_PlayingCanvasGroup;
     [SerializeField] CanvasGroup night_WaitingCanvasGroup;
+    [SerializeField] List<PlayerListEntryUI> night_playerList = new List<PlayerListEntryUI>();
+    [SerializeField] Transform night_PlayerListParent;
 
     [Header("Day")]
-    [SerializeField] CanvasGroup dayCanvasGroup;
+    [SerializeField] CanvasGroup day_CanvasGroup;
     [SerializeField] CanvasGroup day_PlayingCanvasGroup;
     [SerializeField] CanvasGroup day_WaitingCanvasGroup;
+    [SerializeField] List<PlayerListEntryUI> day_playerList = new List<PlayerListEntryUI>();
+    [SerializeField] Transform day_PlayerListParent;
 
     private void OnEnable()
     {
-        NetworkManager.OnNight += onNight;
-        NetworkManager.OnDay += onDay;
+        NetworkManager.OnNightStarted += OnNightStarted;
+        NetworkManager.OnNightEnded += OnNightEnded;
     }
 
     private void OnDisable()
     {
-        NetworkManager.OnNight -= onNight;
-        NetworkManager.OnDay -= onDay;
+        NetworkManager.OnNightStarted -= OnNightStarted;
+        NetworkManager.OnNightEnded -= OnNightEnded;
     }
 
     void populateNightPlayerList()
@@ -57,11 +57,13 @@ public class GameCanvas : MonoBehaviour
         night_playerList.Clear();
     }
 
-    void onNight()
+    void OnNightStarted()
     {
+        Debug.Log("On Night Started");
         populateNightPlayerList();
         day_PlayingCanvasGroup.alpha = 0;
         night_CanvasGroup.alpha = 1;
+        day_CanvasGroup.alpha = 0;
         night_PlayingCanvasGroup.alpha = 1;
         night_WaitingCanvasGroup.alpha = 0;
     }
@@ -95,11 +97,12 @@ public class GameCanvas : MonoBehaviour
         day_playerList.Clear();
     }
 
-    void onDay()
+    void OnNightEnded()
     {
+        Debug.Log("On Night Ended");
         populateDayPlayerList();
         night_CanvasGroup.alpha = 0;
-        day_PlayingCanvasGroup.alpha = 1;
+        day_CanvasGroup.alpha = 1;
         day_PlayingCanvasGroup.alpha = 1;
         day_WaitingCanvasGroup.alpha = 0;
     }

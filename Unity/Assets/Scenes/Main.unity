@@ -2234,16 +2234,16 @@ MonoBehaviour:
   playerListCanvasGroup: {fileID: 2023044620}
   playerListEntryPrefab: {fileID: 4392085569598207200, guid: 72340ce8b19ea2948a9655a7b4e50e91,
     type: 3}
-  night_playerList: []
-  night_PlayerListParent: {fileID: 2023044619}
-  day_playerList: []
-  day_PlayerListParent: {fileID: 519428321}
   night_CanvasGroup: {fileID: 619050091}
   night_PlayingCanvasGroup: {fileID: 1809756131}
   night_WaitingCanvasGroup: {fileID: 511213438}
-  dayCanvasGroup: {fileID: 95623636}
+  night_playerList: []
+  night_PlayerListParent: {fileID: 2023044619}
+  day_CanvasGroup: {fileID: 95623636}
   day_PlayingCanvasGroup: {fileID: 1985414476}
   day_WaitingCanvasGroup: {fileID: 895617875}
+  day_playerList: []
+  day_PlayerListParent: {fileID: 519428321}
 --- !u!1 &816408946
 GameObject:
   m_ObjectHideFlags: 0

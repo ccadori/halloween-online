@@ -10,15 +10,15 @@ public class WerewolfHowlingSound : MonoBehaviour
 
     private void OnEnable()
     {
-        NetworkManager.OnNight += onNight;
+        NetworkManager.OnNightStarted += OnNightStarted;
     }
 
     private void OnDisable()
     {
-        NetworkManager.OnNight -= onNight;
+        NetworkManager.OnNightStarted -= OnNightStarted;
     }
 
-    void onNight()
+    void OnNightStarted()
     {
         audioSource.Play();
     }
