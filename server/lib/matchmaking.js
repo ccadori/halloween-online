@@ -72,6 +72,7 @@ class Matchmaking {
   onClientEnter(client) {
     client.on('matchmaking-join', (payload) => this.onJoinRoom(client, payload));
     client.on('matchmaking-create', (payload) => this.onCreateRoom(client, payload));
+    client.on('disconnect', () => this.onClientExit(client));
   }
 
   /**
@@ -81,6 +82,7 @@ class Matchmaking {
   onClientExit(client) {
     client.removeAllListeners('matchmaking-create');
     client.removeAllListeners('matchmaking-join');
+    client.removeAllListeners('disconnect');
   }
 }
 

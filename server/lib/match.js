@@ -1,6 +1,7 @@
 const roles = require('../utils/roles');
 const Cycles = require('./cycles');
 const Player = require('./player');
+const PlayerActions = require('./playerActions');
 
 class Match {
   /**
@@ -13,6 +14,7 @@ class Match {
     this.id = id;
     this.players = [];
     this.cycles = new Cycles(this);
+    this.playerActions = new PlayerActions(this);
 
     this.emitToAll = this.emitToAll.bind(this);
     this.removePlayer = this.removePlayer.bind(this);
@@ -22,6 +24,7 @@ class Match {
     this.start = this.start.bind(this);
     this.onMatchStart = this.onMatchStart.bind(this);
     this.onPlayerEnter = this.onPlayerEnter.bind(this);
+    this.onPlayerExit = this.onPlayerExit.bind(this);
     
     if (masterPlayer) this.addPlayer(masterPlayer);
   }
@@ -123,6 +126,16 @@ class Match {
    */
   onPlayerEnter(player) {
     player.client.on('room-start', (payload) => this.onMatchStart(player, payload));
+    player.client.on('disconnect', () => this.onPlayerExit(player));
+  }
+
+  /**
+   * When a new player exits the room
+   * @param {Player} player 
+   */
+  onPlayerExit(player) {
+    player.client.removeAllListeners('room-start');
+    player.client.removeAllListeners('disconnect');
   }
 };
 
