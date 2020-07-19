@@ -15,7 +15,7 @@ public class MatchMakingScreen : MonoBehaviour
 
     [SerializeField] Canvas loadingCanvas;
 
-    [SerializeField] Text roomIDText;
+    [SerializeField] InputField roomIDText;
 
     private void OnEnable()
     {
