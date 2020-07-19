@@ -24,7 +24,7 @@ class PlayerActions {
    * @param {Object} payload 
    */
   onPlayerAction(player, payload) {
-    if (!player.alive && this.cycles.passedTurn.includes(player.id)) 
+    if (!player.alive && this.cycles.alreadyPlayer.includes(player.id)) 
       return false;
 
     switch (player.role.name)
@@ -38,7 +38,7 @@ class PlayerActions {
       case "Seer":
         {
           const targetPlayer = this.match.players.find(p => p.id == payload.targetId);
-          player.client.emit('seer-result', { roleId: targetPlayer.role.id });
+          player.client.emit('seer-result', JSON.stringify({ roleId: targetPlayer.role.id }));
           return;
         }
     }

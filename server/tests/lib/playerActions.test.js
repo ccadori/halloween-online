@@ -8,7 +8,7 @@ describe("player actions", () => {
     const cycles = new Cycles(match);
     const playerActions = new PlayerActions(match, cycles);
     
-    cycles.passedTurn = [player.id];
+    cycles.alreadyPlayer = [player.id];
 
     expect(playerActions.onPlayerAction(player)).toBeFalsy();
   });

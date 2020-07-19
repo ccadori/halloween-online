@@ -8,8 +8,8 @@ describe("cycles", () => {
     
     cycles.onPlayerEndTurn(player);
 
-    expect(cycles.passedTurn.length).toEqual(1);
-    expect(cycles.passedTurn[0]).toEqual(101);
+    expect(cycles.alreadyPlayer.length).toEqual(1);
+    expect(cycles.alreadyPlayer[0]).toEqual(101);
   });
 
   it("Should not add a user to passed turn when it is already in it", () => {
@@ -20,8 +20,8 @@ describe("cycles", () => {
     cycles.onPlayerEndTurn(player);
     cycles.onPlayerEndTurn(player);
 
-    expect(cycles.passedTurn.length).toEqual(1);
-    expect(cycles.passedTurn[0]).toEqual(101);
+    expect(cycles.alreadyPlayer.length).toEqual(1);
+    expect(cycles.alreadyPlayer[0]).toEqual(101);
   });
 
   it("Should end the night when all the users have already passed the turn", () => {

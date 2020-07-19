@@ -10,7 +10,7 @@ class Cycles {
     this.match = match;
     this.isNight = false;
     this.nightTimeout = null;
-    this.passedTurn = [];
+    this.alreadyPlayer = [];
 
     this.startNight = this.startNight.bind(this);
     this.endNight = this.endNight.bind(this);
@@ -23,7 +23,7 @@ class Cycles {
   startNight() {
     this.isNight = true;
     this.match.emitToAll('night-started');
-    this.passedTurn = [];
+    this.alreadyPlayer = [];
 
     this.nightTimeout = setTimeout(this.endNight, nightDuration);
   }
@@ -43,12 +43,12 @@ class Cycles {
    * @param {Player} player 
    */
   onPlayerEndTurn(player) {
-    if (this.passedTurn.includes(player.id))
+    if (this.alreadyPlayer.includes(player.id))
       return;
     
-    this.passedTurn.push(player.id);
+    this.alreadyPlayer.push(player.id);
     
-    if (this.passedTurn.length == this.match.alivePlayers().length) {
+    if (this.alreadyPlayer.length == this.match.alivePlayers().length) {
       this.endNight();
       
       if (this.nightTimeout) 
