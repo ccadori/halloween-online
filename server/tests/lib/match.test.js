@@ -95,7 +95,7 @@ describe('room', () => {
     player.client.emitToServer('room-start');
 
     expect(match.started).toBeTruthy();
-    expect(player.client.events.find(e => e.event === 'match-start')).toBeDefined();
-    expect(player2.client.events.find(e => e.event === 'match-start')).toBeDefined();
+    expect(player.client.events.find(e => e.event === 'match-started')).toBeDefined();
+    expect(player2.client.events.find(e => e.event === 'match-started')).toBeDefined();
   });
 });

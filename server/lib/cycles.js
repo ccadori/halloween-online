@@ -22,7 +22,7 @@ class Cycles {
    */
   startNight() {
     this.isNight = true;
-    this.match.emitToAll('night-start');
+    this.match.emitToAll('night-started');
     this.passedTurn = [];
 
     this.nightTimeout = setTimeout(this.endNight, nightDuration);
@@ -35,7 +35,7 @@ class Cycles {
     if (!this.isNight) return false;
     
     this.isNight = false;
-    this.match.emitToAll('night-end');
+    this.match.emitToAll('night-ended');
   }
 
   /**

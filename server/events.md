@@ -15,6 +15,6 @@ Are listed in this document all events from client and server.
 - **player-connected ({ name, id }):** New player in the room
 - **player-disconnected (playerID):** A player has disconnected
 - **room-start-error (error message):** Error when starting match
-- **match-start ():** Starting match
-- **night-start ():** Night has started
-- **night-end ():** Night has ended
+- **match-started ():** Starting match
+- **night-started ():** Night has started
+- **night-ended ():** Night has ended

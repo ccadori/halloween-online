@@ -22,7 +22,7 @@ class Match {
     this.findPlayer = this.findPlayer.bind(this);
     this.generatePlayersRoles = this.generatePlayersRoles.bind(this);
     this.start = this.start.bind(this);
-    this.onMatchStart = this.onMatchStart.bind(this);
+    this.onRoomStart = this.onRoomStart.bind(this);
     this.onPlayerEnter = this.onPlayerEnter.bind(this);
     this.onPlayerExit = this.onPlayerExit.bind(this);
     
@@ -105,7 +105,7 @@ class Match {
   start() {
     this.generatePlayersRoles();
     this.started = true;
-    this.emitToAll('match-start');
+    this.emitToAll('match-started');
     this.cycles.startNight();
   }
 
@@ -113,7 +113,7 @@ class Match {
    * When client tries to start the match
    * @param {Player} player 
    */
-  onMatchStart(player) {
+  onRoomStart(player) {
     if (player !== this.master)
       player.client.emit('room-start-error');
 
@@ -125,7 +125,7 @@ class Match {
    * @param {Player} player 
    */
   onPlayerEnter(player) {
-    player.client.on('room-start', (payload) => this.onMatchStart(player, payload));
+    player.client.on('room-start', (payload) => this.onRoomStart(player, payload));
     player.client.on('disconnect', () => this.onPlayerExit(player));
   }
 
