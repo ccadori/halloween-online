@@ -15,10 +15,13 @@ public class MatchMakingScreen : MonoBehaviour
 
     [SerializeField] Canvas loadingCanvas;
 
+    [SerializeField] InputField roomIDText;
+
     private void OnEnable()
     {
         NetworkManager.OnMatchmakingConnected += OnMatchmakingConnected;
         NetworkManager.OnMatchmakingError += OnMatchmakingError;
+
     }
 
     private void OnDisable()
@@ -32,6 +35,7 @@ public class MatchMakingScreen : MonoBehaviour
         matchMakingCanvas.enabled = false;
         lobbyCanvas.enabled = true;
         loadingCanvas.enabled = false;
+        OnRoomIDChange(roomID);
     }
 
     void OnMatchmakingError(string error)
@@ -42,7 +46,8 @@ public class MatchMakingScreen : MonoBehaviour
     public void OnRoomIDChange(string newID)
     {
         roomID = newID;
-        if(newID.Length > 0)
+        roomIDText.text = roomID;
+        if (newID.Length > 0)
         {
             joinBttn.interactable = true;
         }

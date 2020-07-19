@@ -14,15 +14,19 @@ public class NetworkManager : MonoBehaviour
 
     public bool IsHost;
 
+    public string url = "http://localhost:3000/socket.io/";
+
     #region Actions
     public static Action<PlayerData> OnPlayerConnected;
     public static Action<PlayerData> OnPlayerDisconnected;
     public static Action<string> OnMatchmakingConnected;
     public static Action<string> OnMatchmakingError;
-    public static Action OnRoomStart;
-    public static Action OnNight;
-    public static Action OnDay;
+    public static Action OnMatchStart;
+    public static Action OnRoomStartError;
     public static Action<RoleData> OnReceiveRole;
+
+    public static Action OnNightStarted;
+    public static Action OnNightEnded;
     #endregion
 
 
@@ -48,7 +52,7 @@ public class NetworkManager : MonoBehaviour
         SocketOptions options = new SocketOptions();
         options.AutoConnect = false;
 
-        manager = new SocketManager(new Uri("http://localhost:3000/socket.io/"), options);
+        manager = new SocketManager(new Uri(url), options);
         manager.Socket.On(SocketIOEventTypes.Connect, OnServerConnect);
         manager.Socket.On(SocketIOEventTypes.Disconnect, OnServerDisconnect);
         manager.Socket.On(SocketIOEventTypes.Error, (Socket socket, Packet packet, object[] args) => {
@@ -75,7 +79,10 @@ public class NetworkManager : MonoBehaviour
         //MatchMaking
         manager.Socket.On("matchmaking-connected", (Socket socket, Packet packet, object[] args) => { OnMatchmakingConnected?.Invoke(args[0].ToString());});
         manager.Socket.On("matchmaking-error", (Socket socket, Packet packet, object[] args) => { OnMatchmakingError?.Invoke(args[0].ToString()); });
-        manager.Socket.On("room-start", (Socket socket, Packet packet, object[] args) => { OnRoomStart?.Invoke(); });
+        manager.Socket.On("match-started", (Socket socket, Packet packet, object[] args) => { OnMatchStart?.Invoke(); });
+        manager.Socket.On("room-start-error", (Socket socket, Packet packte, object[] args) => { OnRoomStartError?.Invoke(); });
+        manager.Socket.On("night-started", (Socket socket, Packet packet, object[] args) => { OnNightStarted?.Invoke(); });
+        manager.Socket.On("night-ended", (Socket socket, Packet packet, object[] args) => { OnNightEnded?.Invoke(); });
         //Roles
         manager.Socket.On("player-set", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke(JsonUtility.FromJson<RoleData>(args[0].ToString()));});
 

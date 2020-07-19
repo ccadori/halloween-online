@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class WerewolfHowlingSound : MonoBehaviour
+public class RoosterSound : MonoBehaviour
 {
 
     [SerializeField] AudioSource audioSource;
 
     private void OnEnable()
     {
-        NetworkManager.OnNightStarted += OnNightStarted;
+        NetworkManager.OnNightEnded += OnNightEnded;
     }
 
     private void OnDisable()
     {
-        NetworkManager.OnNightStarted -= OnNightStarted;
+        NetworkManager.OnNightEnded -= OnNightEnded;
     }
 
-    void OnNightStarted()
+    void OnNightEnded()
     {
         audioSource.Play();
     }
