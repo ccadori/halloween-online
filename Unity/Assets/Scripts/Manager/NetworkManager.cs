@@ -27,6 +27,8 @@ public class NetworkManager : MonoBehaviour
 
     public static Action OnNightStarted;
     public static Action OnNightEnded;
+
+    public static Action<DeadPlayerData> OnDeadPlayerList;
     #endregion
 
 
@@ -86,6 +88,8 @@ public class NetworkManager : MonoBehaviour
         manager.Socket.On("night-ended", (Socket socket, Packet packet, object[] args) => { OnNightEnded?.Invoke(); });
         //Roles
         manager.Socket.On("player-set", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke(JsonUtility.FromJson<RoleData>(args[0].ToString()));});
+        //Events
+        manager.Socket.On("night-report", (Socket socket, Packet packet, object[] args) => { OnDeadPlayerList?.Invoke(JsonUtility.FromJson<DeadPlayerData>(args[0].ToString())); }); 
 
         manager.Open();
     }
