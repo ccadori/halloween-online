@@ -42,7 +42,8 @@ public class GameCanvas : MonoBehaviour
         {
             PlayerListEntryUI newPlayerListEntry = Instantiate(playerListEntryPrefab, night_PlayerListParent) as PlayerListEntryUI;
             newPlayerListEntry.NameText.text = player.Value.Name;
-            newPlayerListEntry.Button.onClick.AddListener(() => ConfirmAction(player.Value.ID));
+            newPlayerListEntry.playerID = player.Key;
+            //newPlayerListEntry.Button.onClick.AddListener(() => ConfirmAction(player.Value.ID));
             night_playerList.Add(newPlayerListEntry);
         }
     }
@@ -68,7 +69,7 @@ public class GameCanvas : MonoBehaviour
         night_WaitingCanvasGroup.alpha = 0;
     }
 
-    public void ConfirmAction(string playerID)
+    public void ConfirmAction()
     {
         night_PlayingCanvasGroup.alpha = 0;
         night_WaitingCanvasGroup.alpha = 1;

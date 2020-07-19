@@ -2056,6 +2056,7 @@ GameObject:
   - component: {fileID: 620747747}
   - component: {fileID: 620747746}
   - component: {fileID: 620747745}
+  - component: {fileID: 620747748}
   m_Layer: 5
   m_Name: ConfirmBttn
   m_TagString: Untagged
@@ -2162,6 +2163,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 620747743}
   m_CullTransparentMesh: 0
+--- !u!114 &620747748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620747743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8ed40337e5e26440964b5ff82838153, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 620747745}
 --- !u!1 &625857492
 GameObject:
   m_ObjectHideFlags: 0
@@ -2271,6 +2285,7 @@ GameObject:
   - component: {fileID: 681620647}
   - component: {fileID: 681620646}
   - component: {fileID: 681620650}
+  - component: {fileID: 681620651}
   m_Layer: 5
   m_Name: GameCanvas
   m_TagString: Untagged
@@ -2385,6 +2400,20 @@ MonoBehaviour:
   day_WaitingCanvasGroup: {fileID: 895617875}
   day_playerList: []
   day_PlayerListParent: {fileID: 519428321}
+--- !u!114 &681620651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681620645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab8dfa0cef0c4e7418cee27b23316234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedPlayerID: 
+  gameCanvas: {fileID: 681620650}
 --- !u!1 &816408946
 GameObject:
   m_ObjectHideFlags: 0
