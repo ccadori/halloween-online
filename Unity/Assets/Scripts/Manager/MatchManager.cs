@@ -22,10 +22,16 @@ public class MatchManager : MonoBehaviour
         }
     }
 
-    public void ConfirmChoice()
+    public void ConfirmAction()
     {
         NetworkManager.SendEmitMessage("player-action", JsonUtility.ToJson(new PlayerActionEmit(selectedPlayerID)));
         gameCanvas.ConfirmAction();
+    }
+
+    public void ConfirmVote()
+    {
+        NetworkManager.SendEmitMessage("player-vote", JsonUtility.ToJson(new PlayerActionEmit(selectedPlayerID)));
+        gameCanvas.ConfirmVote();
     }
 }
 

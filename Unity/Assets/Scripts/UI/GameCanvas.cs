@@ -74,7 +74,6 @@ public class GameCanvas : MonoBehaviour
             newPlayerListEntry.NameText.text = player.Value.Name;
             newPlayerListEntry.playerID = player.Key;
             newPlayerListEntry.gameObject.SetActive(true);
-            //newPlayerListEntry.Button.onClick.AddListener(() => ConfirmAction(player.Value.ID));
             night_playerList.Add(newPlayerListEntry);
         }
     }
@@ -114,7 +113,6 @@ public class GameCanvas : MonoBehaviour
         {
             PlayerListEntryUI newPlayerListEntry = Instantiate(day_PlayerListEntryPrefab, day_PlayerListParent) as PlayerListEntryUI;
             newPlayerListEntry.NameText.text = player.Value.Name;
-            newPlayerListEntry.Button.onClick.AddListener(() => confirmVote(player.Value.ID));
             newPlayerListEntry.gameObject.SetActive(true);
             day_playerList.Add(newPlayerListEntry);
         }
@@ -140,7 +138,7 @@ public class GameCanvas : MonoBehaviour
         day_WaitingCanvasGroup.alpha = 0;
     }
 
-    public void confirmVote(string playerID)
+    public void ConfirmVote()
     {
         day_PlayingCanvasGroup.alpha = 0;
         day_WaitingCanvasGroup.alpha = 1;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NightConfirmButton : MonoBehaviour
+public class DayConfirmButton : MonoBehaviour
 {
     [SerializeField] Button button;
 
@@ -14,6 +14,6 @@ public class NightConfirmButton : MonoBehaviour
 
     void Confirm()
     {
-        MatchManager.Instance.ConfirmAction();
+        MatchManager.Instance.ConfirmVote();
     }
 }
