@@ -8,6 +8,7 @@ public class PlayerListEntryUI : MonoBehaviour
     public Text NameText;
     public string playerID;
     public Button Button;
+    public GameObject selectionHighlight;
 
     private void OnEnable()
     {
@@ -16,6 +17,14 @@ public class PlayerListEntryUI : MonoBehaviour
 
     public void selectPlayer ()
     {
+        GameCanvas.Instance.DeselectAllPlayers();
+
         MatchManager.Instance.selectedPlayerID = playerID;
+        selectionHighlight.SetActive(true);
+    }
+
+    public void DeSelect()
+    {
+        selectionHighlight.SetActive(false);
     }
 }

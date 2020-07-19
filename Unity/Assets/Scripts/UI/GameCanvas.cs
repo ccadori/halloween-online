@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameCanvas : MonoBehaviour
 {
     [SerializeField] CanvasGroup playerListCanvasGroup;
-    [SerializeField] PlayerListEntryUI playerListEntryPrefab;
 
     [Header("Night")]
+    [SerializeField] PlayerListEntryUI night_PlayerListEntryPrefab;
     [SerializeField] CanvasGroup night_CanvasGroup;
     [SerializeField] CanvasGroup night_PlayingCanvasGroup;
     [SerializeField] CanvasGroup night_WaitingCanvasGroup;
@@ -16,11 +17,27 @@ public class GameCanvas : MonoBehaviour
     [SerializeField] Transform night_PlayerListParent;
 
     [Header("Day")]
+    [SerializeField] PlayerListEntryUI day_PlayerListEntryPrefab;
     [SerializeField] CanvasGroup day_CanvasGroup;
     [SerializeField] CanvasGroup day_PlayingCanvasGroup;
     [SerializeField] CanvasGroup day_WaitingCanvasGroup;
     [SerializeField] List<PlayerListEntryUI> day_playerList = new List<PlayerListEntryUI>();
     [SerializeField] Transform day_PlayerListParent;
+
+
+    public static GameCanvas Instance;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else if(Instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void OnEnable()
     {
@@ -34,15 +51,29 @@ public class GameCanvas : MonoBehaviour
         NetworkManager.OnNightEnded -= OnNightEnded;
     }
 
+    public void DeselectAllPlayers()
+    {
+        for(int i = 0; i <  night_playerList.Count; i++)
+        {
+            night_playerList[i].DeSelect();
+        }
+
+        for (int i = 0; i < day_playerList.Count; i++)
+        {
+            day_playerList[i].DeSelect();
+        }
+    }
+
     void populateNightPlayerList()
     {
         clearNightPlayerList();
 
         foreach(KeyValuePair<string, Player> player in PlayerManager.Instance.PlayerList)
         {
-            PlayerListEntryUI newPlayerListEntry = Instantiate(playerListEntryPrefab, night_PlayerListParent) as PlayerListEntryUI;
+            PlayerListEntryUI newPlayerListEntry = Instantiate(night_PlayerListEntryPrefab, night_PlayerListParent) as PlayerListEntryUI;
             newPlayerListEntry.NameText.text = player.Value.Name;
             newPlayerListEntry.playerID = player.Key;
+            newPlayerListEntry.gameObject.SetActive(true);
             //newPlayerListEntry.Button.onClick.AddListener(() => ConfirmAction(player.Value.ID));
             night_playerList.Add(newPlayerListEntry);
         }
@@ -81,9 +112,10 @@ public class GameCanvas : MonoBehaviour
 
         foreach (KeyValuePair<string, Player> player in PlayerManager.Instance.PlayerList)
         {
-            PlayerListEntryUI newPlayerListEntry = Instantiate(playerListEntryPrefab, day_PlayerListParent) as PlayerListEntryUI;
+            PlayerListEntryUI newPlayerListEntry = Instantiate(day_PlayerListEntryPrefab, day_PlayerListParent) as PlayerListEntryUI;
             newPlayerListEntry.NameText.text = player.Value.Name;
             newPlayerListEntry.Button.onClick.AddListener(() => confirmVote(player.Value.ID));
+            newPlayerListEntry.gameObject.SetActive(true);
             day_playerList.Add(newPlayerListEntry);
         }
     }
