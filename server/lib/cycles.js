@@ -52,7 +52,7 @@ class Cycles {
       this.endNight();
       
       if (this.nightTimeout) 
-        clearTimeout(nightTimeout);
+        clearTimeout(this.nightTimeout);
     }
   }
 }
