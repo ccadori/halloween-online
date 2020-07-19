@@ -17,16 +17,23 @@ public class Lobby : MonoBehaviour
 
     private void OnEnable()
     {
-        NetworkManager.OnRoomStart += OnRoomStart;
+        NetworkManager.OnMatchStart += OnRoomStart;
+        NetworkManager.OnRoomStartError += OnRoomStartError;
         NetworkManager.OnPlayerConnected += OnPlayerConnected;
         NetworkManager.OnMatchmakingConnected += OnMatchmakingConnected;
     }
 
     private void OnDisable()
     {
-        NetworkManager.OnRoomStart -= OnRoomStart;
+        NetworkManager.OnMatchStart -= OnRoomStart;
+        NetworkManager.OnRoomStartError -= OnRoomStartError;
         NetworkManager.OnPlayerConnected -= OnPlayerConnected;
         NetworkManager.OnMatchmakingConnected -= OnMatchmakingConnected;
+    }
+
+    void OnRoomStartError()
+    {
+        Debug.Log("Room Start Error");
     }
 
     private void OnPlayerConnected(PlayerData playerData)
