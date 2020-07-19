@@ -89,7 +89,7 @@ public class NetworkManager : MonoBehaviour
         //Roles
         manager.Socket.On("role-set", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke(JsonUtility.FromJson<RoleData>(args[0].ToString()));});
         //Events
-        manager.Socket.On("night-report", (Socket socket, Packet packet, object[] args) => { OnDeadPlayerList?.Invoke(JsonUtility.FromJson<DeadPlayerData>(args[0].ToString())); }); 
+        manager.Socket.On("night-report", (Socket socket, Packet packet, object[] args) => { Debug.Log(args[0].ToString()); OnDeadPlayerList?.Invoke(JsonUtility.FromJson<DeadPlayerData>(args[0].ToString())); }); 
 
         manager.Open();
     }

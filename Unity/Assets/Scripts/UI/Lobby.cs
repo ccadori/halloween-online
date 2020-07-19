@@ -74,12 +74,14 @@ public class Lobby : MonoBehaviour
         clearNightPlayerList();
 
         PlayerListEntryUI MyPlayerListEntry = Instantiate(playerListEntryPrefab, playerListParent) as PlayerListEntryUI;
+        MyPlayerListEntry.gameObject.SetActive(true);
         MyPlayerListEntry.nameText.text = Player.Instance.Name;
         playerList.Add(MyPlayerListEntry);
 
         foreach (KeyValuePair<string, Player> player in PlayerManager.Instance.playerList)
         {
             PlayerListEntryUI newPlayerListEntry = Instantiate(playerListEntryPrefab, playerListParent) as PlayerListEntryUI;
+            newPlayerListEntry.gameObject.SetActive(true);
             newPlayerListEntry.nameText.text = player.Value.Name;
             playerList.Add(newPlayerListEntry);
         }
