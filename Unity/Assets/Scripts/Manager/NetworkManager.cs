@@ -29,6 +29,8 @@ public class NetworkManager : MonoBehaviour
     public static Action OnNightEnded;
 
     public static Action<DeadPlayerData> OnDeadPlayerList;
+
+    public static Action<SeerResultData> OnSeerResult;
     #endregion
 
 
@@ -89,7 +91,10 @@ public class NetworkManager : MonoBehaviour
         //Roles
         manager.Socket.On("role-set", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke(JsonUtility.FromJson<RoleData>(args[0].ToString()));});
         //Events
-        manager.Socket.On("night-report", (Socket socket, Packet packet, object[] args) => { Debug.Log(args[0].ToString()); OnDeadPlayerList?.Invoke(JsonUtility.FromJson<DeadPlayerData>(args[0].ToString())); }); 
+        manager.Socket.On("night-report", (Socket socket, Packet packet, object[] args) => { OnDeadPlayerList?.Invoke(JsonUtility.FromJson<DeadPlayerData>(args[0].ToString())); });
+
+        //Class Specific
+        manager.Socket.On("action-result-seer", (Socket socket, Packet packet, object[] args) => { OnSeerResult?.Invoke(JsonUtility.FromJson<SeerResultData>(args[0].ToString())); });
 
         manager.Open();
     }
@@ -151,4 +156,10 @@ public class RoleData
     {
         this.id = id;
     }
+}
+
+[Serializable]
+public class SeerResultData
+{
+    public int roleId;
 }
