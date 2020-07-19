@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PortraitLoader : MonoBehaviour
 {
-    [SerializeField] Image Image;
+    [SerializeField] Image image;
 
     private void OnEnable()
     {
@@ -20,6 +20,6 @@ public class PortraitLoader : MonoBehaviour
 
     private void onReceiveRole(RoleData roleData)
     {
-        Image.sprite = Resources.Load<Sprite>("Portraits/" + roleData.id);
+        image.sprite = Resources.Load<Sprite>("Portraits/" + roleData.id);
     }
 }

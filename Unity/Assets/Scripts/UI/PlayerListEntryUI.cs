@@ -5,6 +5,26 @@ using UnityEngine.UI;
 
 public class PlayerListEntryUI : MonoBehaviour
 {
-    public Text NameText;
-    public Button Button;
+    public Text nameText;
+    public string playerID;
+    public Button button;
+    public GameObject selectionHighlight;
+
+    private void OnEnable()
+    {
+        button.onClick.AddListener(()=> { selectPlayer(); });
+    }
+
+    public void selectPlayer ()
+    {
+        GameCanvas.Instance.DeselectAllPlayers();
+
+        MatchManager.Instance.selectedPlayerID = playerID;
+        selectionHighlight.SetActive(true);
+    }
+
+    public void DeSelect()
+    {
+        selectionHighlight.SetActive(false);
+    }
 }

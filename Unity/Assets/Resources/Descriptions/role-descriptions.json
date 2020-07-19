@@ -1,0 +1,16 @@
+{
+    "roles":[
+    {
+        "name":"Aldeão",
+        "description":"O Aldeão não sabe fazer nada, tente descobrir quem é o lobo e finja que você é mais importante do que realmente é"
+    },
+    {
+        "name":"Vidente",
+        "description":"Como um vidente, você é capaz de descobrir a verdadeira natureza dos outros jogadores. Descubra o mal e convença seus amigos a enforcá-lo"
+    },
+    {
+        "name":"Lobisomen",
+        "description":"Você é o lobisomen, uma vez por noite, escolha uma vítima. Seja o último vivo."
+    }
+    ]
+}

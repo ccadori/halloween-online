@@ -12,7 +12,7 @@ public class NetworkManager : MonoBehaviour
 
     SocketManager manager;
 
-    public bool IsHost;
+    public bool isHost;
 
     public string url = "http://localhost:3000/socket.io/";
 
@@ -27,6 +27,8 @@ public class NetworkManager : MonoBehaviour
 
     public static Action OnNightStarted;
     public static Action OnNightEnded;
+
+    public static Action<DeadPlayerData> OnDeadPlayerList;
     #endregion
 
 
@@ -85,7 +87,9 @@ public class NetworkManager : MonoBehaviour
         manager.Socket.On("night-started", (Socket socket, Packet packet, object[] args) => { OnNightStarted?.Invoke(); });
         manager.Socket.On("night-ended", (Socket socket, Packet packet, object[] args) => { OnNightEnded?.Invoke(); });
         //Roles
-        manager.Socket.On("player-set", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke(JsonUtility.FromJson<RoleData>(args[0].ToString()));});
+        manager.Socket.On("role-set", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke(JsonUtility.FromJson<RoleData>(args[0].ToString()));});
+        //Events
+        manager.Socket.On("night-report", (Socket socket, Packet packet, object[] args) => { OnDeadPlayerList?.Invoke(JsonUtility.FromJson<DeadPlayerData>(args[0].ToString())); }); 
 
         manager.Open();
     }
@@ -97,7 +101,7 @@ public class NetworkManager : MonoBehaviour
 
     void OnServerDisconnect(Socket socket, Packet packet, params object[] args)
     {
-        IsHost = false;
+        isHost = false;
         Debug.Log("Disconnected");
     }
 

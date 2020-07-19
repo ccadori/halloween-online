@@ -6,11 +6,11 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
 
-    public Dictionary<string, Player> PlayerList = new Dictionary<string, Player>();
+    public Dictionary<string, Player> playerList = new Dictionary<string, Player>();
 
-    [SerializeField] GameObject NetworkPlayerPrefab;
+    [SerializeField] GameObject networkPlayerPrefab;
 
-    public string RoomID;
+    public string roomID;
 
     public static PlayerManager Instance;
 
@@ -45,13 +45,13 @@ public class PlayerManager : MonoBehaviour
 
     private void OnMatchmakingConnected(string roomID)
     {
-        RoomID = roomID;
+        this.roomID = roomID;
     }
 
     private void OnPlayerConnected(PlayerData data)
     {
-        Player newPlayer = Instantiate(NetworkPlayerPrefab).GetComponent<Player>();
-        PlayerList.Add(data.id, newPlayer);
+        Player newPlayer = Instantiate(networkPlayerPrefab).GetComponent<Player>();
+        playerList.Add(data.id, newPlayer);
         newPlayer.Name = data.name;
         newPlayer.ID = data.id;
         Debug.Log("Spawnando Player");
@@ -59,8 +59,8 @@ public class PlayerManager : MonoBehaviour
 
     private void OnPlayerDisconnected(PlayerData data)
     {
-        Destroy(PlayerList[data.id].gameObject);
-        PlayerList.Remove(data.id);
+        Destroy(playerList[data.id].gameObject);
+        playerList.Remove(data.id);
         Debug.Log("Destruind Player");
     }
 }

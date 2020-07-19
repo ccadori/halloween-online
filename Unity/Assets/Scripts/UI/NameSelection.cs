@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class NameSelection : MonoBehaviour
 {
-    [SerializeField] InputField NameInputField;
-    [SerializeField] Button SendNameButton;
+    [SerializeField] InputField nameInputField;
+    [SerializeField] Button sendNameButton;
     [SerializeField] Canvas loginScreen;
     [SerializeField] Canvas matchMakingScreen;
 
     public void SendName()
     {
         //NetworkManager.SendEmitMessage("player-name", NameInputField.text);
-        Player.Instance.Name = NameInputField.text;
+        Player.Instance.Name = nameInputField.text;
         loginScreen.enabled = false;
         matchMakingScreen.enabled = true;
     }

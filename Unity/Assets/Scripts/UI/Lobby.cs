@@ -43,7 +43,7 @@ public class Lobby : MonoBehaviour
 
     void OnMatchmakingConnected(string roomID)
     {
-        if (NetworkManager.Instance.IsHost)
+        if (NetworkManager.Instance.isHost)
         {
             hostScreen.SetActive(true);
             clientScreen.SetActive(false);
@@ -74,13 +74,13 @@ public class Lobby : MonoBehaviour
         clearNightPlayerList();
 
         PlayerListEntryUI MyPlayerListEntry = Instantiate(playerListEntryPrefab, playerListParent) as PlayerListEntryUI;
-        MyPlayerListEntry.NameText.text = Player.Instance.Name;
+        MyPlayerListEntry.nameText.text = Player.Instance.Name;
         playerList.Add(MyPlayerListEntry);
 
-        foreach (KeyValuePair<string, Player> player in PlayerManager.Instance.PlayerList)
+        foreach (KeyValuePair<string, Player> player in PlayerManager.Instance.playerList)
         {
             PlayerListEntryUI newPlayerListEntry = Instantiate(playerListEntryPrefab, playerListParent) as PlayerListEntryUI;
-            newPlayerListEntry.NameText.text = player.Value.Name;
+            newPlayerListEntry.nameText.text = player.Value.Name;
             playerList.Add(newPlayerListEntry);
         }
     }
