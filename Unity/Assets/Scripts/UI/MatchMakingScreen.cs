@@ -76,23 +76,23 @@ public class MatchMakingScreen : MonoBehaviour
 [System.Serializable]
 public class JoinRoomEmit
 {
-    public string Name;
-    public string RoomID;
+    public string name;
+    public string roomId;
 
     public JoinRoomEmit(string name, string roomID)
     {
-        Name = name;
-        RoomID = roomID;
+        this.name = name;
+        roomId = roomID;
     }
 }
 
 [System.Serializable]
 public class HostRoomEmit
 {
-    public string Name;
+    public string name;
 
     public HostRoomEmit(string name)
     {
-        Name = name;
+        this.name = name;
     }
 }
