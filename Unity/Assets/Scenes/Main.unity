@@ -3725,7 +3725,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Welcome to the first version of\n <size=10><b>Lobisomen-Do-Cadorinho-E-Do-Rafaboy</b></size>\n\n\n\nWe
+  m_Text: "Welcome to the first version of\n\n <size=18><b>Halloween Online</b></size>\n\n\nWe
     hope that you have fun playing!"
 --- !u!222 &1082095556
 CanvasRenderer:
