@@ -43,7 +43,7 @@ class Match {
     const report = this.playerActions.generateReport();
     this.playerActions.clear();
     this.emitToAll('night-ended');
-    this.emitToAll('night-report', report);
+    this.emitToAll('night-report', JSON.stringify(report));
   }
 
   /**
@@ -137,14 +137,18 @@ class Match {
     this.start();
   }
 
+  onPlayerAction(player, payload) {
+    this.playerActions.onPlayerAction(player, payload);
+    this.cycles.onPlayerEndTurn(player);
+  }
+
   /**
    * When a new player enter the room
    * @param {Player} player 
    */
   onPlayerEnter(player) {
     player.client.on('room-start', (payload) => this.onRoomStart(player, parser.convert(payload)));
-    player.client.on('player-action', (payload) => this.cycles.onPlayerEndTurn(player, parser.convert(payload)));
-    player.client.on('player-action', (payload) => this.playerActions.onPlayerAction(player, parser.convert(payload)));
+    player.client.on('player-action', (payload) => this.onPlayerAction(player, parser.convert(payload)));
     player.client.on('action-skip', (payload) => this.cycles.onPlayerEndTurn(player, parser.convert(payload)));
     player.client.on('disconnect', () => this.onPlayerExit(player));
   }
