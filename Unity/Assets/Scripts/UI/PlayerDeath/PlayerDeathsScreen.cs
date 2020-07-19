@@ -8,7 +8,7 @@ public class PlayerDeathsScreen : MonoBehaviour
     [SerializeField] Canvas canvas;
 
 
-    List<PlayerDeathEntry> playerDeathEntryList;
+    List<PlayerDeathEntry> playerDeathEntryList = new List<PlayerDeathEntry>();
 
     public static PlayerDeathsScreen Instance;
 
@@ -45,11 +45,22 @@ public class PlayerDeathsScreen : MonoBehaviour
 
     public void RegisterDeath(string playerId)
     {
-        PlayerDeathEntry newEntry = Instantiate(playerDeathEntry, playerDeathEntry.transform.parent);
-        newEntry.SetupInformation(playerId);
-        newEntry.gameObject.SetActive(true);
-        canvas.enabled = true;
-        playerDeathEntryList.Add(newEntry);
+        if(playerId != Player.Instance.ID)
+        {
+            PlayerDeathEntry newEntry = Instantiate(playerDeathEntry, playerDeathEntry.transform.parent);
+            newEntry.SetupInformation(playerId);
+            newEntry.gameObject.SetActive(true);
+            canvas.enabled = true;
+            playerDeathEntryList.Add(newEntry);
+        }
+        else
+        {
+            PlayerDeathEntry newEntry = Instantiate(playerDeathEntry, playerDeathEntry.transform.parent);
+            newEntry.SetupInformation(Player.Instance);
+            newEntry.gameObject.SetActive(true);
+            canvas.enabled = true;
+            playerDeathEntryList.Add(newEntry);
+        }
     }
 
     public void ClearList()
