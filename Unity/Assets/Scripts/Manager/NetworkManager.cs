@@ -62,6 +62,7 @@ public class NetworkManager : MonoBehaviour
         });
         manager.Socket.On("player-connected", (Socket socket, Packet packet, object[] args) => 
         {
+            Debug.Log(args[0].ToString());
             PlayerData data = JsonUtility.FromJson<PlayerData>(args[0].ToString());
             Debug.Log("Player connected with ID " + data.id);
             OnPlayerConnected?.Invoke(data); 
