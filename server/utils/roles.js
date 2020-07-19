@@ -6,16 +6,16 @@ const roles = [
     name: "Villager",
     default: true
   },
-  { 
+  {
     id: 1, 
-    name: "Werewolf", 
-    evil: true,
+    name: "Seer",
     required: true,
     populationFrequency: 0.2,
   },
-  {
+  { 
     id: 2, 
-    name: "Seer",
+    name: "Werewolf", 
+    evil: true,
     required: true,
     populationFrequency: 0.2,
   },
