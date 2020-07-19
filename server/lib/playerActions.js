@@ -37,7 +37,7 @@ class PlayerActions {
 
       case "Seer":
         {
-          const targetPlayer = this.match.players.find(p => p.id = payload.targetId);
+          const targetPlayer = this.match.players.find(p => p.id == payload.targetId);
           player.client.emit('seer-result', { roleId: targetPlayer.role.id });
           return;
         }
