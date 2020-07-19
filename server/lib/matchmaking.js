@@ -1,6 +1,7 @@
 const random = require('randomstring');
 const Match = require('./match');
 const Player = require('./player');
+const parser = require('../utils/parser');
 
 class Matchmaking {
   constructor() {
@@ -27,7 +28,7 @@ class Matchmaking {
 
   /**
    * Find a match by its id
-   * @param {Number} id 
+   * @param {String} id 
    */
   findMatch(id) {
     return this.matches.find(r => r.id == id);
@@ -70,8 +71,8 @@ class Matchmaking {
    * @param {Object} client 
    */
   onClientEnter(client) {
-    client.on('matchmaking-join', (payload) => this.onJoinRoom(client, payload));
-    client.on('matchmaking-create', (payload) => this.onCreateRoom(client, payload));
+    client.on('matchmaking-join', (payload) => this.onJoinRoom(client, parser.convert(payload)));
+    client.on('matchmaking-create', (payload) => this.onCreateRoom(client, parser.convert(payload)));
     client.on('disconnect', () => this.onClientExit(client));
   }
 

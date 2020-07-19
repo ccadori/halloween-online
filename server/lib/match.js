@@ -2,6 +2,7 @@ const roles = require('../utils/roles');
 const Cycles = require('./cycles');
 const Player = require('./player');
 const PlayerActions = require('./playerActions');
+const parser = require('../utils/parser');
 
 class Match {
   /**
@@ -14,7 +15,7 @@ class Match {
     this.id = id;
     this.players = [];
     this.cycles = new Cycles(this);
-    this.playerActions = new PlayerActions(this);
+    this.playerActions = new PlayerActions(this, this.cycles);
 
     this.emitToAll = this.emitToAll.bind(this);
     this.removePlayer = this.removePlayer.bind(this);
@@ -125,7 +126,9 @@ class Match {
    * @param {Player} player 
    */
   onPlayerEnter(player) {
-    player.client.on('room-start', (payload) => this.onRoomStart(player, payload));
+    player.client.on('room-start', (payload) => this.onRoomStart(player, parser.convert(payload)));
+    player.client.on('player-action', (payload) => this.cycles.onPlayerEndTurn(player, parser.convert(payload)));
+    player.client.on('player-action', (payload) => this.playerActions.onPlayerAction(player, parser.convert(payload)));
     player.client.on('disconnect', () => this.onPlayerExit(player));
   }
 
@@ -135,6 +138,7 @@ class Match {
    */
   onPlayerExit(player) {
     player.client.removeAllListeners('room-start');
+    player.client.removeAllListeners('player-action');
     player.client.removeAllListeners('disconnect');
   }
 };

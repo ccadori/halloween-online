@@ -43,7 +43,17 @@ class Cycles {
    * @param {Player} player 
    */
   onPlayerEndTurn(player) {
-    this.nightTimeout.push(player.id);
+    if (this.passedTurn.includes(player.id))
+      return;
+    
+    this.passedTurn.push(player.id);
+    
+    if (this.passedTurn.length == this.match.players.length) {
+      this.endNight();
+      
+      if (this.nightTimeout) 
+        clearTimeout(nightTimeout);
+    }
   }
 }
 
