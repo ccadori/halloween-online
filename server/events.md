@@ -8,6 +8,7 @@ All game events events are listed in this document.
 - **matchmaking-join ({ name, roomId }):** Join a room
 - **room-start ():** Start match (can only be called by room creator)
 - **player-action ({ targetId }):** Execute the player role's action
+- **action-skip ():** Skip the player's turn
 
 ## Events from Server
 
@@ -17,5 +18,8 @@ All game events events are listed in this document.
 - **player-disconnected (playerID):** A player has disconnected
 - **room-start-error (error message):** Error when starting match
 - **match-started ():** Starting match
+- **role-set ({ id }):** Return the player's role
 - **night-started ():** Night has started
 - **night-ended ():** Night has ended
+- **action-result-seer ({ roleId? }):** Returns the seer's action result
+- **night-report ({ deadPlayersId }):** Return the reports from the last night

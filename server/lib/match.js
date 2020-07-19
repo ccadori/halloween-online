@@ -26,10 +26,26 @@ class Match {
     this.onRoomStart = this.onRoomStart.bind(this);
     this.onPlayerEnter = this.onPlayerEnter.bind(this);
     this.onPlayerExit = this.onPlayerExit.bind(this);
+    this.onNightEnded = this.onNightEnded.bind(this);
     
     if (masterPlayer) this.addPlayer(masterPlayer);
   }
   
+  /**
+   * Return all alive players
+   */
+  alivePlayers() {
+    return this.players.filter(p => p.alive);
+  }
+
+  onNightEnded() {
+    this.playerActions.execute();  
+    const report = this.playerActions.generateReport();
+    this.playerActions.clear();
+    this.emitToAll('night-ended');
+    this.emitToAll('night-report', report);
+  }
+
   /**
    * Emit an event to all players
    * @param {String} event 
@@ -129,6 +145,7 @@ class Match {
     player.client.on('room-start', (payload) => this.onRoomStart(player, parser.convert(payload)));
     player.client.on('player-action', (payload) => this.cycles.onPlayerEndTurn(player, parser.convert(payload)));
     player.client.on('player-action', (payload) => this.playerActions.onPlayerAction(player, parser.convert(payload)));
+    player.client.on('action-skip', (payload) => this.cycles.onPlayerEndTurn(player, parser.convert(payload)));
     player.client.on('disconnect', () => this.onPlayerExit(player));
   }
 

@@ -35,7 +35,7 @@ class Cycles {
     if (!this.isNight) return false;
     
     this.isNight = false;
-    this.match.emitToAll('night-ended');
+    this.match.onNightEnded();
   }
 
   /**
@@ -48,7 +48,7 @@ class Cycles {
     
     this.passedTurn.push(player.id);
     
-    if (this.passedTurn.length == this.match.players.length) {
+    if (this.passedTurn.length == this.match.alivePlayers().length) {
       this.endNight();
       
       if (this.nightTimeout) 

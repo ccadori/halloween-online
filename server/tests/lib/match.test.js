@@ -98,4 +98,18 @@ describe('room', () => {
     expect(player.client.events.find(e => e.event === 'match-started')).toBeDefined();
     expect(player2.client.events.find(e => e.event === 'match-started')).toBeDefined();
   });
+
+  it("Should return only alive players", () => {
+    const player = new Player({ on: () => {} }, "1");
+    const player2 = new Player({ on: () => {} }, "2");
+    const match = new Match(1, player);
+    match.players.push(player2);
+    player2.alive = false;
+
+    const alivePlayers = match.alivePlayers();
+
+    expect(match.players.length).toEqual(2);
+    expect(alivePlayers.length).toEqual(1);
+    expect(alivePlayers[0].name).toEqual("1");
+  });
 });

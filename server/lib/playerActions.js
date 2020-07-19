@@ -10,8 +10,12 @@ class PlayerActions {
   constructor(match, cycles) {
     this.match = match;
     this.cycles = cycles;
-
+    
     this.onPlayerAction = this.onPlayerAction.bind(this);
+    this.generateReport = this.generateReport.bind(this);
+    this.queue = { deaths: [] };
+    this.execute = this.execute.bind(this);
+    this.clear = this.clear.bind(this);
   }
 
   /**
@@ -20,21 +24,48 @@ class PlayerActions {
    * @param {Object} payload 
    */
   onPlayerAction(player, payload) {
-    if (this.cycles.passedTurn.includes(player.id)) 
-      return;
+    if (!player.alive && this.cycles.passedTurn.includes(player.id)) 
+      return false;
 
-    switch (player.role)
+    switch (player.role.name)
     {
-      case ("Werewolf"):
+      case "Werewolf":
         {
-          console.log("Werewold action");
+          this.queue.deaths.push(payload.targetId);
+          return;
         }
 
-      case ("Seer"):
+      case "Seer":
         {
-          console.log("Seer action");
+          const targetPlayer = this.match.players.find(p => p.id = payload.targetId);
+          player.client.emit('seer-result', { roleId: targetPlayer.role.id });
+          return;
         }
     }
+
+    return true;
+  }
+
+  /**
+   * Execute all the queued actions
+   * @param {Array<Player>} players 
+   */
+  execute() {
+    for (let id of this.queue.deaths) {
+      const player = this.match.players.find(p => p.id == id);
+      if (player) player.alive = false;
+    }
+  }
+
+  /**
+   * Clear all the executed actions
+   */
+  clear() {
+    this.queue = { deaths: [] };
+  }
+
+  generateReport() {
+    return { deadPlayersId: [ ...this.queue.deaths ] };
   }
 }
 

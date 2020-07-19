@@ -3,6 +3,7 @@ class Player {
     this.name = name || client.id;
     this.client = client;
     this.id = client.id;
+    this.alive = true;
     this.role = null;
   }
 }
