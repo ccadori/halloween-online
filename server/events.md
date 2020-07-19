@@ -1,12 +1,13 @@
 # Endpoints
 
-Are listed in this document all events from client and server.
+All game events events are listed in this document.
 
 ## Events from Client
 
 - **matchmaking-create ({ name } ):** Create room
 - **matchmaking-join ({ name, roomId }):** Join a room
 - **room-start ():** Start match (can only be called by room creator)
+- **player-action ({ targetId }):** Execute the player role's action
 
 ## Events from Server
 
