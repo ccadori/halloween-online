@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class GameCanvas : MonoBehaviour
     [SerializeField] CanvasGroup night_WaitingCanvasGroup;
     [SerializeField] List<PlayerListEntryUI> night_playerList = new List<PlayerListEntryUI>();
     [SerializeField] Transform night_PlayerListParent;
+    [SerializeField] GameObject night_DeadScreen;
 
     [Header("Day")]
     [SerializeField] PlayerListEntryUI day_PlayerListEntryPrefab;
@@ -23,6 +25,8 @@ public class GameCanvas : MonoBehaviour
     [SerializeField] CanvasGroup day_WaitingCanvasGroup;
     [SerializeField] List<PlayerListEntryUI> day_playerList = new List<PlayerListEntryUI>();
     [SerializeField] Transform day_PlayerListParent;
+    [SerializeField] GameObject day_DeadScreen;
+
 
 
     public static GameCanvas Instance;
@@ -43,12 +47,14 @@ public class GameCanvas : MonoBehaviour
     {
         NetworkManager.OnNightStarted += OnNightStarted;
         NetworkManager.OnNightEnded += OnNightEnded;
+        Player.Instance.OnPlayerDied += OnPlayerDied;
     }
 
     private void OnDisable()
     {
         NetworkManager.OnNightStarted -= OnNightStarted;
         NetworkManager.OnNightEnded -= OnNightEnded;
+        Player.Instance.OnPlayerDied -= OnPlayerDied;
     }
 
     public void DeselectAllPlayers()
@@ -71,6 +77,10 @@ public class GameCanvas : MonoBehaviour
         foreach(KeyValuePair<string, Player> player in PlayerManager.Instance.playerList)
         {
             PlayerListEntryUI newPlayerListEntry = Instantiate(night_PlayerListEntryPrefab, night_PlayerListParent) as PlayerListEntryUI;
+
+            if (!Player.Instance.Alive)
+                newPlayerListEntry.selectable = false;
+
             newPlayerListEntry.nameText.text = player.Value.Name;
             newPlayerListEntry.playerID = player.Key;
             newPlayerListEntry.gameObject.SetActive(true);
@@ -97,6 +107,9 @@ public class GameCanvas : MonoBehaviour
         day_CanvasGroup.alpha = 0;
         night_PlayingCanvasGroup.alpha = 1;
         night_WaitingCanvasGroup.alpha = 0;
+
+        if (!Player.Instance.Alive)
+            night_DeadScreen.SetActive(true);
     }
 
     public void ConfirmAction()
@@ -111,10 +124,13 @@ public class GameCanvas : MonoBehaviour
 
         foreach (KeyValuePair<string, Player> player in PlayerManager.Instance.playerList)
         {
-            PlayerListEntryUI newPlayerListEntry = Instantiate(day_PlayerListEntryPrefab, day_PlayerListParent) as PlayerListEntryUI;
-            newPlayerListEntry.nameText.text = player.Value.Name;
-            newPlayerListEntry.gameObject.SetActive(true);
-            day_playerList.Add(newPlayerListEntry);
+            if(player.Value.Alive)
+            {
+                PlayerListEntryUI newPlayerListEntry = Instantiate(day_PlayerListEntryPrefab, day_PlayerListParent) as PlayerListEntryUI;
+                newPlayerListEntry.nameText.text = player.Value.Name;
+                newPlayerListEntry.gameObject.SetActive(true);
+                day_playerList.Add(newPlayerListEntry);
+            }
         }
     }
 
@@ -131,16 +147,25 @@ public class GameCanvas : MonoBehaviour
     void OnNightEnded()
     {
         Debug.Log("On Night Ended");
-        populateDayPlayerList();
+        Invoke("populateDayPlayerList",0);
         night_CanvasGroup.alpha = 0;
         day_CanvasGroup.alpha = 1;
         day_PlayingCanvasGroup.alpha = 1;
         day_WaitingCanvasGroup.alpha = 0;
+
+        if(!Player.Instance.Alive)
+            day_DeadScreen.SetActive(true);
     }
 
     public void ConfirmVote()
     {
         day_PlayingCanvasGroup.alpha = 0;
         day_WaitingCanvasGroup.alpha = 1;
+    }
+
+    private void OnPlayerDied()
+    {
+        if (!Player.Instance.Alive)
+            day_DeadScreen.SetActive(true);
     }
 }

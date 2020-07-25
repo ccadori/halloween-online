@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     public PlayerRoles Role;
     public static Player Instance;
 
+    public Action OnPlayerDied;
+
     private void Awake()
     {
         if(isMine)
@@ -23,15 +25,26 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         NetworkManager.OnReceiveRole += OnReceiveRole;
+        NetworkManager.OnDeadPlayerList += OnDeadPlayerList;
     }
+
 
     private void OnDisable()
     {
         NetworkManager.OnReceiveRole -= OnReceiveRole;
+        NetworkManager.OnDeadPlayerList -= OnDeadPlayerList;
     }
 
     public void OnReceiveRole(RoleData roleData)
     {
         Role = (PlayerRoles)int.Parse(roleData.id);
+    }
+    private void OnDeadPlayerList(DeadPlayerData data)
+    {
+        if(data.deadPlayersId.Contains(ID))
+        {
+            Alive = false;
+            OnPlayerDied?.Invoke();
+        }
     }
 }

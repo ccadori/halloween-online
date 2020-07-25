@@ -101,6 +101,7 @@ public class NetworkManager : MonoBehaviour
 
     void OnServerConnect(Socket socket, Packet packet, params object[] args)
     {
+        Player.Instance.ID = socket.Id;
         Debug.Log("Connected");
     }
 

@@ -22,6 +22,9 @@ public class PlayerListEntryUI : MonoBehaviour
         if (!selectable)
             return;
 
+        if (!Player.Instance.Alive)
+            return;
+
         GameCanvas.Instance.DeselectAllPlayers();
 
         MatchManager.Instance.selectedPlayerID = playerID;
