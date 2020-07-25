@@ -53,7 +53,7 @@ class Match {
   }
 
   onVoteEnd() {
-    this.emitToAll('vote-report', this.voteCycle.lastReport);
+    this.emitToAll('vote-report', JSON.stringify(this.voteCycle.lastReport));
     this.nightCycle.start();
   }
 
