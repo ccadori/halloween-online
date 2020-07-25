@@ -25,19 +25,19 @@ public class VoteReport : MonoBehaviour
 
     private void OnEnable()
     {
-        NetworkManager.OnDeadPlayerList += OnDeadPlayerList;
+        NetworkManager.OnVotedPlayerList += OnVotedPlayerList;
     }
 
     private void OnDisable()
     {
-        NetworkManager.OnDeadPlayerList -= OnDeadPlayerList;
+        NetworkManager.OnVotedPlayerList -= OnVotedPlayerList;
     }
 
-    public void OnDeadPlayerList(DeadPlayerData deadPlayerData)
+    public void OnVotedPlayerList(VotedPlayerData deadPlayerData)
     {
-        for (int i = 0; i < deadPlayerData.deadPlayersId.Count; i++)
+        for (int i = 0; i < deadPlayerData.votedPlayersId.Count; i++)
         {
-            RegisterDeath(deadPlayerData.deadPlayersId[i]);
+            RegisterDeath(deadPlayerData.votedPlayersId[i]);
         }
     }
 

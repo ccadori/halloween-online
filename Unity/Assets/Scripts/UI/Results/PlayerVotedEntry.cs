@@ -14,12 +14,12 @@ public class PlayerVotedEntry : MonoBehaviour
         }
         else
         {
-            playerNameText.text = PlayerManager.Instance.playerList[playerId].Name + " morreu por causas desconhecidas";
+            playerNameText.text = PlayerManager.Instance.playerList[playerId].Name + " morreu na forca";
         }
     }
 
     public void SetupInformation(Player player)
     {
-        playerNameText.text = player.Name + " morreu por causas desconhecidas";
+        playerNameText.text = player.Name + " morreu na forca";
     }
 }
