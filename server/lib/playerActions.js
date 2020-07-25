@@ -1,6 +1,6 @@
 const Match = require('./match');
 const Player = require('./player');
-const Cycles = require('./cycles');
+const Cycles = require('./nightCycle');
 
 class PlayerActions {
   /**
@@ -10,12 +10,15 @@ class PlayerActions {
   constructor(match, cycles) {
     this.match = match;
     this.cycles = cycles;
-    
+    this.alreadyPlayed = [];
+    this.queue = { deaths: [] };
+
     this.onPlayerAction = this.onPlayerAction.bind(this);
     this.generateReport = this.generateReport.bind(this);
-    this.queue = { deaths: [] };
+    this.werewolfAction = this.werewolfAction.bind(this);
+    this.seerAction = this.seerAction.bind(this);
     this.execute = this.execute.bind(this);
-    this.clear = this.clear.bind(this);
+    this.clear = this.reset.bind(this);
   }
 
   /**
@@ -24,29 +27,28 @@ class PlayerActions {
    * @param {Object} payload 
    */
   onPlayerAction(player, payload) {
-    if (!player.alive && this.cycles.alreadyPlayer.includes(player.id)) 
+    if (!player.alive && this.cycles.alreadyPlayed.includes(player.id)) 
       return false;
     
     if (!payload)
-      return;
+      return true;
 
     switch (player.role.name)
     {
-      case "Werewolf":
-        {
-          this.queue.deaths.push(payload.targetId);
-          return;
-        }
-
-      case "Seer":
-        {
-          const targetPlayer = this.match.players.find(p => p.id == payload.targetId);
-          player.client.emit('action-result-seer', JSON.stringify({ roleId: targetPlayer.role.id }));
-          return;
-        }
+      case "Werewolf": return this.werewolfAction(player, payload);
+      case "Seer": return this.seerAction(player, payload);
     }
 
     return true;
+  }
+
+  werewolfAction(player, payload) {
+    this.queue.deaths.push(payload.targetId);
+  }
+
+  seerAction(player, payload) {
+    const targetPlayer = this.match.players.find(p => p.id == payload.targetId);
+    player.client.emit('action-result-seer', JSON.stringify({ roleId: targetPlayer.role.id }));
   }
 
   /**
@@ -60,15 +62,15 @@ class PlayerActions {
     }
   }
 
+  generateReport() {
+    return { deadPlayersId: [ ...this.queue.deaths ] };
+  }
+
   /**
    * Clear all the executed actions
    */
-  clear() {
+  reset() {
     this.queue = { deaths: [] };
-  }
-
-  generateReport() {
-    return { deadPlayersId: [ ...this.queue.deaths ] };
   }
 }
 

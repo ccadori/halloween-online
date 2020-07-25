@@ -1,5 +1,6 @@
 const roles = require('../utils/roles');
-const Cycles = require('./cycles');
+const NightCycle = require('./nightCycle');
+const VoteCycle = require('./voteCycle');
 const Player = require('./player');
 const PlayerActions = require('./playerActions');
 const parser = require('../utils/parser');
@@ -14,8 +15,9 @@ class Match {
     this.started = false;
     this.id = id;
     this.players = [];
-    this.cycles = new Cycles(this);
-    this.playerActions = new PlayerActions(this, this.cycles);
+    this.nightCycle = new NightCycle(this);
+    this.voteCycle = new VoteCycle(this);
+    this.playerActions = new PlayerActions(this, this.nightCycle);
 
     this.emitToAll = this.emitToAll.bind(this);
     this.removePlayer = this.removePlayer.bind(this);
@@ -26,7 +28,7 @@ class Match {
     this.onRoomStart = this.onRoomStart.bind(this);
     this.onPlayerEnter = this.onPlayerEnter.bind(this);
     this.onPlayerExit = this.onPlayerExit.bind(this);
-    this.onNightEnded = this.onNightEnded.bind(this);
+    this.onNightEnd = this.onNightEnd.bind(this);
     
     if (masterPlayer) this.addPlayer(masterPlayer);
   }
@@ -38,12 +40,20 @@ class Match {
     return this.players.filter(p => p.alive);
   }
 
-  onNightEnded() {
+  onNightEnd() {
     this.playerActions.execute();  
     const report = this.playerActions.generateReport();
-    this.playerActions.clear();
+    this.playerActions.reset();
     this.emitToAll('night-ended');
     this.emitToAll('night-report', JSON.stringify(report));
+    
+    this.voteCycle.start();
+    
+    this.emitToAll('vote-started');
+  }
+
+  onVoteEnd() {
+    this.emitToAll('vote-report', this.voteCycle.lastReport);
   }
 
   /**
@@ -123,7 +133,7 @@ class Match {
     this.generatePlayersRoles();
     this.started = true;
     this.emitToAll('match-started');
-    this.cycles.startNight();
+    this.nightCycle.start();
   }
 
   /**
@@ -139,7 +149,7 @@ class Match {
 
   onPlayerAction(player, payload) {
     this.playerActions.onPlayerAction(player, payload);
-    this.cycles.onPlayerEndTurn(player);
+    this.nightCycle.onPlayerAction(player);
   }
 
   /**
@@ -149,7 +159,9 @@ class Match {
   onPlayerEnter(player) {
     player.client.on('room-start', (payload) => this.onRoomStart(player, parser.convert(payload)));
     player.client.on('player-action', (payload) => this.onPlayerAction(player, parser.convert(payload)));
-    player.client.on('action-skip', (payload) => this.cycles.onPlayerEndTurn(player, parser.convert(payload)));
+    player.client.on('action-skip', (payload) => this.nightCycle.onPlayerAction(player, parser.convert(payload)));
+    player.client.on('player-vote', (payload) => this.voteCycle.onPlayerVote(player, parser.convert(payload)));
+    player.client.on('vote-skip', (payload) => this.voteCycle.onPlayerVote(player, parser.convert(payload)));
     player.client.on('disconnect', () => this.onPlayerExit(player));
   }
 
@@ -161,6 +173,8 @@ class Match {
     player.client.removeAllListeners('room-start');
     player.client.removeAllListeners('player-action');
     player.client.removeAllListeners('disconnect');
+    player.client.removeAllListeners('player-vote');
+    player.client.removeAllListeners('vote-skip');
   }
 };
 

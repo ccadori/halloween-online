@@ -1,14 +1,14 @@
 const PlayerActions = require('../../lib/playerActions');
-const Cycles = require('../../lib/cycles');
+const NightCicle = require('../../lib/nightCycle');
 
 describe("player actions", () => {
   it("Should not allow a player to play twice", () => {
     const player = { id: 101, role: { name: "werewolf" } };
     const match = { players: [player] };
-    const cycles = new Cycles(match);
+    const cycles = new NightCicle(match);
     const playerActions = new PlayerActions(match, cycles);
     
-    cycles.alreadyPlayer = [player.id];
+    cycles.alreadyPlayed = [player.id];
 
     expect(playerActions.onPlayerAction(player)).toBeFalsy();
   });
@@ -18,7 +18,7 @@ describe("player actions", () => {
     const seer = { 
       id: 101, 
       role: { id: "seer", name: "Seer" }, 
-      client: { emit: (message, payload) => { role = payload.roleId }}
+      client: { emit: (message, payload) => { role = JSON.parse(payload).roleId }}
     };
     const werewolf = { 
       id: 102, 
@@ -26,8 +26,8 @@ describe("player actions", () => {
     };
 
     const match = { players: [werewolf, seer] };
-    const cycles = new Cycles(match);
-    const playerActions = new PlayerActions(match, cycles);
+    const nightCycle = new NightCicle(match);
+    const playerActions = new PlayerActions(match, nightCycle);
     
     playerActions.onPlayerAction(seer, { targetId: 102 });
 
@@ -45,7 +45,7 @@ describe("player actions", () => {
     };
 
     const match = { players: [ werewolf, villager ] };
-    const cycles = new Cycles(match);
+    const cycles = new NightCicle(match);
     const playerActions = new PlayerActions(match, cycles);
     
     playerActions.onPlayerAction(werewolf, { targetId: 102 });
@@ -58,7 +58,7 @@ describe("player actions", () => {
     const player1 = { id: 1, alive: true };
     const player2 = { id: 2, alive: true };
     const match = { players: [ player1, player2 ] };
-    const cycles = new Cycles(match);
+    const cycles = new NightCicle(match);
     const playerActions = new PlayerActions(match, cycles);
     
     playerActions.queue.deaths = [1];
@@ -71,7 +71,7 @@ describe("player actions", () => {
 
   it ("Should generate an report", () => {
     const match = { players: [  ] };
-    const cycles = new Cycles(match);
+    const cycles = new NightCicle(match);
     const playerActions = new PlayerActions(match, cycles);
     
     playerActions.queue.deaths = [2];
@@ -83,11 +83,11 @@ describe("player actions", () => {
 
   it ("Should clear queued actions", () => {
     const match = { players: [  ] };
-    const cycles = new Cycles(match);
+    const cycles = new NightCicle(match);
     const playerActions = new PlayerActions(match, cycles);
 
     playerActions.queue.deaths = [2];
-    playerActions.clear();
+    playerActions.reset();
 
     expect(playerActions.queue.deaths.length).toEqual(0);
   });
