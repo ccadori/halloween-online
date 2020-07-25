@@ -9,6 +9,8 @@ All game events events are listed in this document.
 - **room-start ():** Start match (can only be called by room creator)
 - **player-action ({ targetId }):** Execute the player role's action
 - **action-skip ():** Skip the player's turn
+- **player-vote ({ targetId }):** Vote on someone
+- **vote-skip ():** Skip player's vote
 
 ## Events from Server
 
@@ -23,3 +25,6 @@ All game events events are listed in this document.
 - **night-ended ():** Night has ended
 - **action-result-seer ({ roleId? }):** Returns the seer's action result
 - **night-report ({ deadPlayersId }):** Return the reports from the last night
+- **vote-started ():** Voting started
+- **vote-report ({ votedPlayersId }):** Return the report of the voting
+- **match-end ({ isTownWinner }):** Return the result of the match
