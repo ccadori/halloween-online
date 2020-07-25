@@ -24,13 +24,29 @@ public class MatchManager : MonoBehaviour
 
     public void ConfirmAction()
     {
-        NetworkManager.SendEmitMessage("player-action", JsonUtility.ToJson(new PlayerActionEmit(selectedPlayerID)));
+        if(selectedPlayerID != "")
+        {
+            NetworkManager.SendEmitMessage("player-action", JsonUtility.ToJson(new PlayerActionEmit(selectedPlayerID)));
+            selectedPlayerID = "";
+        }
+        else
+        {
+            NetworkManager.SendEmitMessage("action-skip", "");
+        }
         gameCanvas.ConfirmAction();
     }
 
     public void ConfirmVote()
     {
-        NetworkManager.SendEmitMessage("player-vote", JsonUtility.ToJson(new PlayerActionEmit(selectedPlayerID)));
+        if (selectedPlayerID != "")
+        {
+            NetworkManager.SendEmitMessage("player-vote", JsonUtility.ToJson(new PlayerActionEmit(selectedPlayerID)));
+            selectedPlayerID = "";
+        }
+        else
+        {
+            NetworkManager.SendEmitMessage("vote-skip", "");
+        }
         gameCanvas.ConfirmVote();
     }
 }
