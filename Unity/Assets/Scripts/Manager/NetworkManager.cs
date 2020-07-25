@@ -22,6 +22,7 @@ public class NetworkManager : MonoBehaviour
     public static Action<string> OnMatchmakingConnected;
     public static Action<string> OnMatchmakingError;
     public static Action OnMatchStart;
+    public static Action<MatchEndData> OnMatchEnd;
     public static Action OnRoomStartError;
     public static Action<RoleData> OnReceiveRole;
 
@@ -64,12 +65,12 @@ public class NetworkManager : MonoBehaviour
             OnMatchmakingError?.Invoke("Network Error");
             manager.Close();
         });
-        manager.Socket.On("player-connected", (Socket socket, Packet packet, object[] args) => 
+        manager.Socket.On("player-connected", (Socket socket, Packet packet, object[] args) =>
         {
             Debug.Log(args[0].ToString());
             PlayerData data = JsonUtility.FromJson<PlayerData>(args[0].ToString());
             Debug.Log("Player connected with ID " + data.id);
-            OnPlayerConnected?.Invoke(data); 
+            OnPlayerConnected?.Invoke(data);
         });
         manager.Socket.On("player-disconnected", (Socket socket, Packet packet, object[] args) => {
             PlayerData data = new PlayerData(args[0].ToString(), "");
@@ -82,19 +83,21 @@ public class NetworkManager : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         });
         //MatchMaking
-        manager.Socket.On("matchmaking-connected", (Socket socket, Packet packet, object[] args) => { OnMatchmakingConnected?.Invoke(args[0].ToString());});
+        manager.Socket.On("matchmaking-connected", (Socket socket, Packet packet, object[] args) => { OnMatchmakingConnected?.Invoke(args[0].ToString()); });
         manager.Socket.On("matchmaking-error", (Socket socket, Packet packet, object[] args) => { OnMatchmakingError?.Invoke(args[0].ToString()); });
         manager.Socket.On("match-started", (Socket socket, Packet packet, object[] args) => { OnMatchStart?.Invoke(); });
         manager.Socket.On("room-start-error", (Socket socket, Packet packte, object[] args) => { OnRoomStartError?.Invoke(); });
         manager.Socket.On("night-started", (Socket socket, Packet packet, object[] args) => { OnNightStarted?.Invoke(); });
         manager.Socket.On("night-ended", (Socket socket, Packet packet, object[] args) => { OnNightEnded?.Invoke(); });
         //Roles
-        manager.Socket.On("role-set", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke(JsonUtility.FromJson<RoleData>(args[0].ToString()));});
+        manager.Socket.On("role-set", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke(JsonUtility.FromJson<RoleData>(args[0].ToString())); });
         //Events
         manager.Socket.On("night-report", (Socket socket, Packet packet, object[] args) => { OnDeadPlayerList?.Invoke(JsonUtility.FromJson<DeadPlayerData>(args[0].ToString())); });
+        manager.Socket.On("match-end", (Socket socket, Packet packet, object[] args) => { OnMatchEnd?.Invoke(JsonUtility.FromJson<MatchEndData>(args[0].ToString())); });
 
         //Class Specific
         manager.Socket.On("action-result-seer", (Socket socket, Packet packet, object[] args) => { OnSeerResult?.Invoke(JsonUtility.FromJson<SeerResultData>(args[0].ToString())); });
+
 
         manager.Open();
     }
@@ -133,6 +136,12 @@ public class NetworkManager : MonoBehaviour
         if (Instance.manager != null)
             Instance.manager.Socket.Emit(message, json);
     }
+
+    public void CloseConnection()
+    {
+        manager.Close();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }
 
 [Serializable]
@@ -163,4 +172,10 @@ public class RoleData
 public class SeerResultData
 {
     public int roleId;
+}
+
+[Serializable]
+public class MatchEndData
+{
+    public bool isTownWinner;
 }
