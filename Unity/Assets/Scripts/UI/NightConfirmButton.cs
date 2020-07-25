@@ -11,7 +11,6 @@ public class NightConfirmButton : MonoBehaviour
     {
         button.onClick.AddListener(() => { Confirm(); });
     }
-
     void Confirm()
     {
         MatchManager.Instance.ConfirmAction();

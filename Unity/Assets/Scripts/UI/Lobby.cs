@@ -75,12 +75,14 @@ public class Lobby : MonoBehaviour
 
         PlayerListEntryUI MyPlayerListEntry = Instantiate(playerListEntryPrefab, playerListParent) as PlayerListEntryUI;
         MyPlayerListEntry.gameObject.SetActive(true);
+        MyPlayerListEntry.selectable = false;
         MyPlayerListEntry.nameText.text = Player.Instance.Name;
         playerList.Add(MyPlayerListEntry);
 
         foreach (KeyValuePair<string, Player> player in PlayerManager.Instance.playerList)
         {
             PlayerListEntryUI newPlayerListEntry = Instantiate(playerListEntryPrefab, playerListParent) as PlayerListEntryUI;
+            newPlayerListEntry.selectable = false;
             newPlayerListEntry.gameObject.SetActive(true);
             newPlayerListEntry.nameText.text = player.Value.Name;
             playerList.Add(newPlayerListEntry);

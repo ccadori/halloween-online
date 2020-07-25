@@ -10,6 +10,8 @@ public class PlayerListEntryUI : MonoBehaviour
     public Button button;
     public GameObject selectionHighlight;
 
+    public bool selectable = true;
+
     private void OnEnable()
     {
         button.onClick.AddListener(()=> { selectPlayer(); });
@@ -17,6 +19,12 @@ public class PlayerListEntryUI : MonoBehaviour
 
     public void selectPlayer ()
     {
+        if (!selectable)
+            return;
+
+        if (!Player.Instance.Alive)
+            return;
+
         GameCanvas.Instance.DeselectAllPlayers();
 
         MatchManager.Instance.selectedPlayerID = playerID;
