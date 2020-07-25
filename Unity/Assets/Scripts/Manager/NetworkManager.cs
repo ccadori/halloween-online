@@ -30,6 +30,7 @@ public class NetworkManager : MonoBehaviour
     public static Action OnNightEnded;
 
     public static Action<DeadPlayerData> OnDeadPlayerList;
+    public static Action<VotedPlayerData> OnVotedPlayerList;
 
     public static Action<SeerResultData> OnSeerResult;
     #endregion
@@ -93,6 +94,7 @@ public class NetworkManager : MonoBehaviour
         manager.Socket.On("role-set", (Socket socket, Packet packet, object[] args) => { OnReceiveRole?.Invoke(JsonUtility.FromJson<RoleData>(args[0].ToString())); });
         //Events
         manager.Socket.On("night-report", (Socket socket, Packet packet, object[] args) => { OnDeadPlayerList?.Invoke(JsonUtility.FromJson<DeadPlayerData>(args[0].ToString())); });
+        manager.Socket.On("vote-report", (Socket socket, Packet packet, object[] args) => { OnVotedPlayerList?.Invoke(JsonUtility.FromJson<VotedPlayerData>(args[0].ToString())); });
         manager.Socket.On("match-end", (Socket socket, Packet packet, object[] args) => { OnMatchEnd?.Invoke(JsonUtility.FromJson<MatchEndData>(args[0].ToString())); });
 
         //Class Specific
