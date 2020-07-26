@@ -1090,7 +1090,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHost: 0
-  url: http://localhost:3000/socket.io/
+  url_development: http://localhost:3000/socket.io/
+  url_release: http://64.227.107.160:3000/socket.io/
 --- !u!4 &273068939
 Transform:
   m_ObjectHideFlags: 0
