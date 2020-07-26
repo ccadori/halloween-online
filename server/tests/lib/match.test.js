@@ -112,4 +112,31 @@ describe('room', () => {
     expect(alivePlayers.length).toEqual(1);
     expect(alivePlayers[0].name).toEqual("1");
   });
+
+  it ("Should not return a victory", () => {
+    const player = { role: { alignment: "evil" }, alive: true };
+    const player2 = { role: { alignment: "town" }, alive: true };
+    const player3 = { role: { alignment: "town" }, alive: true };
+    const match = new Match(1);
+    match.players = [player, player2, player3];
+
+    expect(match.checkVictory()).toBeNull();
+  });
+
+  it ("Should not return a town victory", () => {
+    const player2 = { role: { alignment: "town" }, alive: true };
+    const player3 = { role: { alignment: "town" }, alive: true };
+    const match = new Match(1);
+    match.players = [player2, player3];
+
+    expect(match.checkVictory()).toEqual({ isTownWinner: true });
+  });
+
+  it ("Should not return an evil victory", () => {
+    const player2 = { role: { alignment: "evil" }, alive: true };
+    const match = new Match(1);
+    match.players = [player2];
+
+    expect(match.checkVictory()).toEqual({ isTownWinner: false });
+  });
 });
