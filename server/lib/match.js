@@ -29,6 +29,7 @@ class Match {
     this.onPlayerEnter = this.onPlayerEnter.bind(this);
     this.onPlayerExit = this.onPlayerExit.bind(this);
     this.onNightEnd = this.onNightEnd.bind(this);
+    this.checkVictory = this.checkVictory.bind(this);
     
     if (masterPlayer) this.addPlayer(masterPlayer);
   }
@@ -47,14 +48,43 @@ class Match {
     this.emitToAll('night-ended');
     this.emitToAll('night-report', JSON.stringify(report));
     
+    const win = this.checkVictory();
+    if (win) {
+      this.emitToAll('match-end', JSON.stringify(win));
+      return;  
+    }
+
     this.voteCycle.start();
-    
     this.emitToAll('vote-started');
   }
 
   onVoteEnd() {
     this.emitToAll('vote-report', JSON.stringify(this.voteCycle.lastReport));
+    
+    const win = this.checkVictory();
+    if (win) {
+      this.emitToAll('match-end', JSON.stringify(win));
+      return;  
+    }
+    
     this.nightCycle.start();
+  }
+
+  checkVictory() {
+    const alignment = null;
+    
+    for (let player of this.alivePlayers()) {
+      if (!alignment) {
+        alignment = player.role.alignment;
+        continue;
+      }
+
+      if (alignment != player.role.alignment) {
+        return null;
+      }
+    }
+    
+    return { isTownWinner: alignment == 'town'? true : false };
   }
 
   /**

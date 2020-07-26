@@ -4,13 +4,15 @@ const roles = [
   { 
     id: 0, 
     name: "Villager",
-    default: true
+    default: true,
+    alignment: "town",
   },
   {
     id: 1, 
     name: "Seer",
     required: true,
     populationFrequency: 0.2,
+    alignment: "town",
   },
   { 
     id: 2, 
@@ -18,6 +20,7 @@ const roles = [
     evil: true,
     required: true,
     populationFrequency: 0.2,
+    alignment: "evil",
   },
 ];
 
