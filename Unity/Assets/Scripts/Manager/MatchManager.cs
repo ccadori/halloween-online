@@ -40,11 +40,13 @@ public class MatchManager : MonoBehaviour
     {
         if (selectedPlayerID != "")
         {
+            Debug.Log("voting");
             NetworkManager.SendEmitMessage("player-vote", JsonUtility.ToJson(new PlayerActionEmit(selectedPlayerID)));
             selectedPlayerID = "";
         }
         else
         {
+            Debug.Log("skipping vote");
             NetworkManager.SendEmitMessage("vote-skip", "");
         }
         gameCanvas.ConfirmVote();

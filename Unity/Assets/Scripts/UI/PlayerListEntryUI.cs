@@ -15,6 +15,15 @@ public class PlayerListEntryUI : MonoBehaviour
     private void OnEnable()
     {
         button.onClick.AddListener(()=> { selectPlayer(); });
+        //Invoke("CheckIfPlayerIsAlive", 0f);
+    }
+
+    void CheckIfPlayerIsAlive()
+    {
+        if (!PlayerManager.Instance.playerList[playerID].Alive)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public void selectPlayer ()
