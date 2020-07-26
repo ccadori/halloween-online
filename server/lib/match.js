@@ -71,7 +71,7 @@ class Match {
   }
 
   checkVictory() {
-    const alignment = null;
+    let alignment = null;
     
     for (let player of this.alivePlayers()) {
       if (!alignment) {
