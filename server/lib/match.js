@@ -59,7 +59,14 @@ class Match {
   }
 
   onVoteEnd() {
-    this.emitToAll('vote-report', JSON.stringify(this.voteCycle.lastReport));
+    const report = this.voteCycle.lastReport
+    
+    if (report.votedPlayersId && report.votedPlayersId.length > 0 && report.votedPlayersId[0])
+    {
+      this.alivePlayers().map(p => { if (p.id == report.votedPlayersId[0]) p.alive = false });
+    }
+    
+    this.emitToAll('vote-report', JSON.stringify(report));
     
     const win = this.checkVictory();
     if (win) {
