@@ -208,6 +208,7 @@ class Match {
    * @param {Player} player 
    */
   onPlayerExit(player) {
+    player.online = false;
     player.client.removeAllListeners('room-start');
     player.client.removeAllListeners('player-action');
     player.client.removeAllListeners('disconnect');
