@@ -28,6 +28,8 @@ public class GameCanvas : MonoBehaviour
     [SerializeField] List<PlayerListEntryUI> day_playerList = new List<PlayerListEntryUI>();
     [SerializeField] Transform day_PlayerListParent;
     [SerializeField] GameObject day_DeadScreen;
+    [SerializeField] Button day_confirmButton;
+    [SerializeField] Text day_confirmButtonText;
 
 
 
@@ -140,6 +142,14 @@ public class GameCanvas : MonoBehaviour
             if(player.Value.Alive)
             {
                 PlayerListEntryUI newPlayerListEntry = Instantiate(day_PlayerListEntryPrefab, day_PlayerListParent) as PlayerListEntryUI;
+
+                if (!Player.Instance.Alive)
+                {
+                    newPlayerListEntry.selectable = false;
+                    day_confirmButton.interactable = false;
+                    day_confirmButtonText.text = "You are Dead";
+                }
+
                 newPlayerListEntry.nameText.text = player.Value.Name;
                 newPlayerListEntry.playerID = player.Key;
                 newPlayerListEntry.gameObject.SetActive(true);

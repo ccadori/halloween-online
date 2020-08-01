@@ -3961,6 +3961,8 @@ MonoBehaviour:
   day_playerList: []
   day_PlayerListParent: {fileID: 519428321}
   day_DeadScreen: {fileID: 1348951374}
+  day_confirmButton: {fileID: 433735453}
+  day_confirmButtonText: {fileID: 2130482042}
 --- !u!114 &681620651
 MonoBehaviour:
   m_ObjectHideFlags: 0
