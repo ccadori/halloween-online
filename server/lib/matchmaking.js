@@ -45,7 +45,7 @@ class Matchmaking {
 
     this.onClientExit(client);
 
-    newPlayer.client.emit('matchmaking-connected', match.id);
+    newPlayer.emit('matchmaking-connected', match.id);
   }
 
   /**
@@ -59,11 +59,14 @@ class Matchmaking {
     if (!match) 
       return client.emit('matchmaking-error', 'Room not found');
     
+    if (match.started) 
+      return client.emit('matchmaking-error', 'Match already started');
+
     this.onClientExit(client);
     
     const newPlayer = new Player(client, payload.name)
     match.addPlayer(newPlayer);
-    newPlayer.client.emit('matchmaking-connected', match.id);
+    newPlayer.emit('matchmaking-connected', match.id);
   }
 
   /**

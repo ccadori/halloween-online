@@ -18,7 +18,7 @@ describe("player actions", () => {
     const seer = { 
       id: 101, 
       role: { id: "seer", name: "Seer" }, 
-      client: { emit: (message, payload) => { role = JSON.parse(payload).roleId }}
+      emit: (message, payload) => { role = JSON.parse(payload).roleId }
     };
     const werewolf = { 
       id: 102, 
