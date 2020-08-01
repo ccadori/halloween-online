@@ -59,6 +59,9 @@ class Matchmaking {
     if (!match) 
       return client.emit('matchmaking-error', 'Room not found');
     
+    if (match.started) 
+      return client.emit('matchmaking-error', 'Match already started');
+
     this.onClientExit(client);
     
     const newPlayer = new Player(client, payload.name)
