@@ -5,28 +5,16 @@ using UnityEngine.UI;
 
 public class NameSelection : MonoBehaviour
 {
-    [SerializeField] InputField NameInputField;
-    [SerializeField] Button SendNameButton;
-    [SerializeField] Canvas Canvas;
-
-    private void OnEnable()
-    {
-        NetworkManager.OnPlayerNameAccepted += OnPlayerNameAccepted;
-    }
-
-    private void OnDisable()
-    {
-        NetworkManager.OnPlayerNameAccepted -= OnPlayerNameAccepted;
-    }
+    [SerializeField] InputField nameInputField;
+    [SerializeField] Button sendNameButton;
+    [SerializeField] Canvas loginScreen;
+    [SerializeField] Canvas matchMakingScreen;
 
     public void SendName()
     {
-        NetworkManager.SendEmitMessage("player-name", NameInputField.text);
-        SendNameButton.interactable = false;
-    }
-
-    void OnPlayerNameAccepted()
-    {
-        Canvas.enabled = false;
+        //NetworkManager.SendEmitMessage("player-name", NameInputField.text);
+        Player.Instance.Name = nameInputField.text;
+        loginScreen.enabled = false;
+        matchMakingScreen.enabled = true;
     }
 }
