@@ -47,7 +47,7 @@ class Cycles extends Cycle {
     
     this.alreadyPlayed.push(player.id);
     
-    if (this.alreadyPlayed.length == this.match.alivePlayers().length)
+    if (this.alreadyPlayed.length == this.match.aliveAndOnlinePlayers().length)
       this.end();
   }
 }

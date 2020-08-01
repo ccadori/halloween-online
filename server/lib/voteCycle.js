@@ -76,7 +76,7 @@ class VoteCycle extends Cycle {
       this.votes[payload.targetId] = (this.votes[payload.targetId] || 0) + 1;
     }
 
-    if (this.alreadyVoted.length == this.match.alivePlayers().length)
+    if (this.alreadyVoted.length == this.match.aliveAndOnlinePlayers().length)
       this.end();
   }
 }

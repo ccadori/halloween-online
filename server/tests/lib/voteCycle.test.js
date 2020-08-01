@@ -2,7 +2,7 @@ const VoteCycle = require('../../lib/voteCycle');
 
 describe("vote cycle", () => {
   it("Should add votes", () => {
-    const voteCycle = new VoteCycle({ alivePlayers: () => [{}, {}, {}] }, 1);
+    const voteCycle = new VoteCycle({ aliveAndOnlinePlayers: () => [{}, {}, {}] }, 1);
     voteCycle.onPlayerVote({ id: 1 }, { targetId: 3 });
 
     expect(voteCycle.votes[3]).toEqual(1);
@@ -13,7 +13,7 @@ describe("vote cycle", () => {
   });
 
   it ("Should generate a target report", () => {
-    const voteCycle = new VoteCycle({ alivePlayers: () => [{}, {}, {}, {}] }, 1);
+    const voteCycle = new VoteCycle({ aliveAndOnlinePlayers: () => [{}, {}, {}, {}] }, 1);
     voteCycle.start();
     voteCycle.onPlayerVote({ id: 1 }, { targetId: 3 });
     voteCycle.onPlayerVote({ id: 2 }, { targetId: 3 });
@@ -24,7 +24,7 @@ describe("vote cycle", () => {
   });
 
   it ("Should generate a draw report", () => {
-    const voteCycle = new VoteCycle({ alivePlayers: () => [{}, {}, {}] }, 1);
+    const voteCycle = new VoteCycle({ aliveAndOnlinePlayers: () => [{}, {}, {}] }, 1);
     voteCycle.start();
     voteCycle.onPlayerVote({ id: 1 }, { targetId: 3 });
     voteCycle.onPlayerVote({ id: 3 }, { targetId: 2 });
@@ -33,7 +33,7 @@ describe("vote cycle", () => {
   });
 
   it ("Should generate the report after voting ends", () => {
-    const voteCycle = new VoteCycle({ alivePlayers: () => [{}, {}, {}] }, 1);
+    const voteCycle = new VoteCycle({ aliveAndOnlinePlayers: () => [{}, {}, {}] }, 1);
     voteCycle.start();
     
     voteCycle.onPlayerVote({ id: 1 }, { targetId: 3 });

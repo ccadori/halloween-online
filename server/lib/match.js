@@ -41,6 +41,10 @@ class Match {
     return this.players.filter(p => p.alive);
   }
 
+  aliveAndOnlinePlayers() {
+    return this.alivePlayers().filter(player => player.online);
+  }
+
   onNightEnd() {
     this.playerActions.execute();  
     const report = this.playerActions.generateReport();
