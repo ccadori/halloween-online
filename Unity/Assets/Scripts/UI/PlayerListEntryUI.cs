@@ -12,6 +12,8 @@ public class PlayerListEntryUI : MonoBehaviour
 
     public bool selectable = true;
 
+    public bool selected = false;
+
     private void OnEnable()
     {
         button.onClick.AddListener(()=> { selectPlayer(); });
@@ -34,14 +36,26 @@ public class PlayerListEntryUI : MonoBehaviour
         if (!Player.Instance.Alive)
             return;
 
-        GameCanvas.Instance.DeselectAllPlayers();
+        if(!selected)
+        {
+            GameCanvas.Instance.DeselectAllPlayers();
 
-        MatchManager.Instance.selectedPlayerID = playerID;
-        selectionHighlight.SetActive(true);
+            MatchManager.Instance.selectedPlayerID = playerID;
+            selectionHighlight.SetActive(true);
+            selected = true;
+        }
+        else
+        {
+            GameCanvas.Instance.DeselectAllPlayers();
+            MatchManager.Instance.selectedPlayerID = "";
+            selected = false;
+            selectionHighlight.SetActive(false);
+        }
     }
 
     public void DeSelect()
     {
+        selected = false;
         selectionHighlight.SetActive(false);
     }
 }
