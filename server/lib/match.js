@@ -103,7 +103,7 @@ class Match {
   emitToAll (event, payload, playerExceptionId) {
     this.players.map(p => {
       if (p.id === playerExceptionId) return;
-      p.client.emit(event, payload);
+      p.emit(event, payload);
     });
   }
 
@@ -134,7 +134,7 @@ class Match {
     
     // Updating new player about the other ones
     this.players.map(p => {
-      player.client.emit('player-connected', JSON.stringify({ id: p.id, name: p.name }));
+      player.emit('player-connected', JSON.stringify({ id: p.id, name: p.name }));
     });
 
     this.players.push(player);
@@ -160,7 +160,7 @@ class Match {
     
     for (let i = 0; i < this.players.length; i++) {
       this.players[i].role = generatedRoles[i];
-      this.players[i].client.emit("role-set", JSON.stringify({ id: generatedRoles[i].id }));
+      this.players[i].emit("role-set", JSON.stringify({ id: generatedRoles[i].id }));
     }
   }
 
@@ -180,7 +180,7 @@ class Match {
    */
   onRoomStart(player) {
     if (player !== this.master)
-      player.client.emit('room-start-error');
+      player.emit('room-start-error');
 
     this.start();
   }

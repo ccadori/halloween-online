@@ -48,7 +48,7 @@ class PlayerActions {
 
   seerAction(player, payload) {
     const targetPlayer = this.match.players.find(p => p.id == payload.targetId);
-    player.client.emit('action-result-seer', JSON.stringify({ roleId: targetPlayer.role.id }));
+    player.emit('action-result-seer', JSON.stringify({ roleId: targetPlayer.role.id }));
   }
 
   /**
