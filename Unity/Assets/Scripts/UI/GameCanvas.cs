@@ -82,19 +82,22 @@ public class GameCanvas : MonoBehaviour
     {
         clearNightPlayerList();
 
-        foreach(KeyValuePair<string, Player> player in PlayerManager.Instance.playerList)
+        if(CanViewPlayerList())
         {
-            if (player.Value.Alive)
+            foreach(KeyValuePair<string, Player> player in PlayerManager.Instance.playerList)
             {
-                PlayerListEntryUI newPlayerListEntry = Instantiate(night_PlayerListEntryPrefab, night_PlayerListParent) as PlayerListEntryUI;
+                if (player.Value.Alive)
+                {
+                    PlayerListEntryUI newPlayerListEntry = Instantiate(night_PlayerListEntryPrefab, night_PlayerListParent) as PlayerListEntryUI;
 
-                if (!Player.Instance.Alive)
-                    newPlayerListEntry.selectable = false;
+                    if (!Player.Instance.Alive)
+                        newPlayerListEntry.selectable = false;
 
-                newPlayerListEntry.nameText.text = player.Value.Name;
-                newPlayerListEntry.playerID = player.Key;
-                newPlayerListEntry.gameObject.SetActive(true);
-                night_playerList.Add(newPlayerListEntry);
+                    newPlayerListEntry.nameText.text = player.Value.Name;
+                    newPlayerListEntry.playerID = player.Key;
+                    newPlayerListEntry.gameObject.SetActive(true);
+                    night_playerList.Add(newPlayerListEntry);
+                }
             }
         }
     }
@@ -206,5 +209,16 @@ public class GameCanvas : MonoBehaviour
     private void OnDeadPlayerList(DeadPlayerData data)
     {
         Invoke("populateDayPlayerList",0);
+    }
+
+    bool CanViewPlayerList()
+    {
+        if(Player.Instance.Role == PlayerRoles.Villager)
+        {
+            return false;
+        }
+
+
+        return true;
     }
 }
