@@ -14,7 +14,8 @@ public class NetworkManager : MonoBehaviour
 
     public bool isHost;
 
-    public string url = "http://localhost:3000/socket.io/";
+    public string url_development = "http://localhost:3000/socket.io/";
+    public string url_release = "http://64.227.107.160:3000";
 
     #region Actions
     public static Action<PlayerData> OnPlayerConnected;
@@ -58,7 +59,11 @@ public class NetworkManager : MonoBehaviour
         SocketOptions options = new SocketOptions();
         options.AutoConnect = false;
 
-        manager = new SocketManager(new Uri(url), options);
+#if UNITY_EDITOR
+        manager = new SocketManager(new Uri(url_development), options);
+#else
+        manager = new SocketManager(new Uri(url_release), options);
+#endif
         manager.Socket.On(SocketIOEventTypes.Connect, OnServerConnect);
         manager.Socket.On(SocketIOEventTypes.Disconnect, OnServerDisconnect);
         manager.Socket.On(SocketIOEventTypes.Error, (Socket socket, Packet packet, object[] args) => {
