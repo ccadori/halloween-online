@@ -93,6 +93,9 @@ public class GameCanvas : MonoBehaviour
                     if (!Player.Instance.Alive)
                         newPlayerListEntry.selectable = false;
 
+                    if (player.Value.isEvil)
+                        newPlayerListEntry.wolfPaw.SetActive(true);
+
                     newPlayerListEntry.nameText.text = player.Value.Name;
                     newPlayerListEntry.playerID = player.Key;
                     newPlayerListEntry.gameObject.SetActive(true);
@@ -152,6 +155,9 @@ public class GameCanvas : MonoBehaviour
                     day_confirmButton.interactable = false;
                     day_confirmButtonText.text = "You are Dead";
                 }
+
+                if (player.Value.isEvil)
+                    newPlayerListEntry.wolfPaw.SetActive(true);
 
                 newPlayerListEntry.nameText.text = player.Value.Name;
                 newPlayerListEntry.playerID = player.Key;

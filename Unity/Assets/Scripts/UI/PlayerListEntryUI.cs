@@ -9,6 +9,7 @@ public class PlayerListEntryUI : MonoBehaviour
     public string playerID;
     public Button button;
     public GameObject selectionHighlight;
+    public GameObject wolfPaw;
 
     public bool selectable = true;
 
