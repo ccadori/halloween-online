@@ -10,8 +10,7 @@ const roles = [
   {
     id: 1, 
     name: "Seer",
-    required: true,
-    populationFrequency: 0.2,
+    populationFrequency: 0.3,
     alignment: "town",
   },
   { 
@@ -22,6 +21,18 @@ const roles = [
     populationFrequency: 0.2,
     alignment: "evil",
   },
+  { 
+    id: 3, 
+    name: "Evil Villager",
+    populationFrequency: 0.3,
+    alignment: "evil",
+  },
+  { 
+    id: 4, 
+    name: "Medic",
+    populationFrequency: 0.3,
+    alignment: "town",
+  },
 ];
 
 class Roles {
@@ -29,6 +40,7 @@ class Roles {
     const generatedRoles = [];
     const percentagePerPlayer = 1 / size;
     const requiredRoles = roles.filter(r => r.required);
+    const otherRoles = roles.filter(r => !r.required && !r.default);
     const defaultRole = roles.filter(r => r.default)[0];
     
     let lastIndexVisited = 0;
@@ -39,6 +51,18 @@ class Roles {
     for (let role of requiredRoles) {
       let clientQuantity = Math.floor(role.populationFrequency / percentagePerPlayer);
       if (clientQuantity < 1) clientQuantity = 1;
+
+      const startIndex = lastIndexVisited;
+      
+      for (lastIndexVisited; lastIndexVisited - startIndex < clientQuantity; lastIndexVisited ++) {
+        generatedRoles.push(role);
+      }
+    }
+
+    // Setting 
+    for (let role of otherRoles) {
+      let clientQuantity = Math.floor(role.populationFrequency / percentagePerPlayer);
+      if (clientQuantity < 1) continue;
 
       const startIndex = lastIndexVisited;
       
