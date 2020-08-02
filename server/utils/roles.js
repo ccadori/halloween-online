@@ -4,7 +4,7 @@ const roles = [
   { 
     id: 0, 
     name: "Villager",
-    default: false,
+    default: true,
     alignment: "town",
   },
   {

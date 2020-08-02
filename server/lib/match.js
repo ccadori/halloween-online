@@ -170,7 +170,7 @@ class Match {
     const generatedRoles = roles.generateRoles(this.players.length);
     
     for (let i = 0; i < this.players.length; i++) {
-      this.players[i].role = generatedRoles[i];
+      this.players[i].role = { ...generatedRoles[i] };
       this.players[i].emit("role-set", JSON.stringify({ id: generatedRoles[i].id }));
     }
 
