@@ -4,7 +4,7 @@ const roles = [
   { 
     id: 0, 
     name: "Villager",
-    default: true,
+    default: false,
     alignment: "town",
   },
   {
@@ -17,19 +17,21 @@ const roles = [
     id: 2, 
     name: "Werewolf", 
     evil: true,
-    required: true,
+    required: false,
     populationFrequency: 0.2,
     alignment: "evil",
   },
   { 
     id: 3, 
     name: "Evil Villager",
+    required: true,
     populationFrequency: 0.3,
     alignment: "evil",
   },
   { 
     id: 4, 
     name: "Medic",
+    required: true,
     populationFrequency: 0.3,
     alignment: "town",
   },
