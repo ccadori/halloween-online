@@ -24,6 +24,7 @@ public class NetworkManager : MonoBehaviour
     public static Action<string> OnMatchmakingError;
     public static Action OnMatchStart;
     public static Action<MatchEndData> OnMatchEnd;
+    public static Action<PlayerAlignmentsData> OnPlayerAlignment;
     public static Action OnRoomStartError;
     public static Action<RoleData> OnReceiveRole;
 
@@ -101,6 +102,7 @@ public class NetworkManager : MonoBehaviour
         manager.Socket.On("night-report", (Socket socket, Packet packet, object[] args) => { OnDeadPlayerList?.Invoke(JsonUtility.FromJson<DeadPlayerData>(args[0].ToString())); });
         manager.Socket.On("vote-report", (Socket socket, Packet packet, object[] args) => { OnVotedPlayerList?.Invoke(JsonUtility.FromJson<VotedPlayerData>(args[0].ToString())); });
         manager.Socket.On("match-end", (Socket socket, Packet packet, object[] args) => { OnMatchEnd?.Invoke(JsonUtility.FromJson<MatchEndData>(args[0].ToString())); });
+        manager.Socket.On("alignment-players", (Socket socket, Packet packet, object[] args) => { OnPlayerAlignment?.Invoke(JsonUtility.FromJson<PlayerAlignmentsData>(args[0].ToString())); });
 
         //Class Specific
         manager.Socket.On("action-result-seer", (Socket socket, Packet packet, object[] args) => { OnSeerResult?.Invoke(JsonUtility.FromJson<SeerResultData>(args[0].ToString())); });
@@ -185,4 +187,10 @@ public class SeerResultData
 public class MatchEndData
 {
     public bool isTownWinner;
+}
+
+[Serializable]
+public class PlayerAlignmentsData
+{
+    public string[] playersID;
 }

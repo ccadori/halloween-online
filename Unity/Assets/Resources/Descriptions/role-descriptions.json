@@ -11,6 +11,14 @@
     {
         "name":"Lobisomen",
         "description":"Você é o lobisomen, uma vez por noite, escolha uma vítima. Seja o último vivo."
-    }
+    },
+    {
+        "name":"Aldeão Possuido",
+        "description":"O Aldeão Possuido deve ajudar o lobisomen a vencer a partida."
+	},
+    {
+        "name":"Médico",
+        "description":"O Médico pode curar uma pessoa por turno tornando-a invulnerável durante esta noite."
+	}
     ]
 }

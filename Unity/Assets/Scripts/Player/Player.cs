@@ -10,7 +10,10 @@ public class Player : MonoBehaviour
     public bool isMine = true;
     public bool Alive = true;
     public PlayerRoles Role;
+    public bool isEvil = false;
+
     public static Player Instance;
+
 
     public Action OnPlayerDied;
 
@@ -27,7 +30,7 @@ public class Player : MonoBehaviour
         NetworkManager.OnReceiveRole += OnReceiveRole;
         NetworkManager.OnDeadPlayerList += OnDeadPlayerList;
         NetworkManager.OnVotedPlayerList += OnVotedPlayerList;
-
+        NetworkManager.OnPlayerAlignment += OnPlayerAlignment;
     }
 
 
@@ -36,13 +39,15 @@ public class Player : MonoBehaviour
         NetworkManager.OnReceiveRole -= OnReceiveRole;
         NetworkManager.OnDeadPlayerList -= OnDeadPlayerList;
         NetworkManager.OnVotedPlayerList -= OnVotedPlayerList;
-
+        NetworkManager.OnPlayerAlignment += OnPlayerAlignment;
     }
 
     public void OnReceiveRole(RoleData roleData)
     {
-        Role = (PlayerRoles)int.Parse(roleData.id);
+        if(isMine)
+            Role = (PlayerRoles)int.Parse(roleData.id);
     }
+
     private void OnDeadPlayerList(DeadPlayerData data)
     {
         if(data.deadPlayersId.Contains(ID))
@@ -58,6 +63,17 @@ public class Player : MonoBehaviour
         {
             Alive = false;
             OnPlayerDied?.Invoke();
+        }
+    }
+
+    public void OnPlayerAlignment(PlayerAlignmentsData data)
+    {
+        for(int i = 0; i < data.playersID.Length; i++)
+        {
+            if(data.playersID[i] == ID)
+            {
+                isEvil = true;
+            }
         }
     }
 }
