@@ -175,7 +175,7 @@ class Match {
     }
 
     const evilPlayersID = this.evilPlayers().map(p => p.id);
-    this.emitToAll("alignment-players", JSON.stringify({ playersID: evilPlayersID }));
+    this.emitToAllEvil("alignment-players", JSON.stringify({ playersID: evilPlayersID }));
   }
 
   /**
