@@ -4,7 +4,7 @@ class VoteCycle extends Cycle {
   /**
    * @param {Match} match 
    */
-  constructor(match, duration = 30000) {
+  constructor(match, duration = 60000) {
     super(duration);
 
     this.match = match;
