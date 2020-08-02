@@ -27,7 +27,6 @@ public class Player : MonoBehaviour
         NetworkManager.OnReceiveRole += OnReceiveRole;
         NetworkManager.OnDeadPlayerList += OnDeadPlayerList;
         NetworkManager.OnVotedPlayerList += OnVotedPlayerList;
-
     }
 
 
@@ -36,13 +35,14 @@ public class Player : MonoBehaviour
         NetworkManager.OnReceiveRole -= OnReceiveRole;
         NetworkManager.OnDeadPlayerList -= OnDeadPlayerList;
         NetworkManager.OnVotedPlayerList -= OnVotedPlayerList;
-
     }
 
     public void OnReceiveRole(RoleData roleData)
     {
-        Role = (PlayerRoles)int.Parse(roleData.id);
+        if(isMine)
+            Role = (PlayerRoles)int.Parse(roleData.id);
     }
+
     private void OnDeadPlayerList(DeadPlayerData data)
     {
         if(data.deadPlayersId.Contains(ID))
