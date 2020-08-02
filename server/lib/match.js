@@ -37,6 +37,10 @@ class Match {
     return this.players.filter(p => p.alive);
   }
 
+  evilPlayers() {
+    return this.players.filter(p => p.role.alignment === "evil");
+  }
+
   aliveAndOnlinePlayers() {
     return this.alivePlayers().filter(player => player.online);
   }
@@ -107,6 +111,13 @@ class Match {
     });
   }
 
+  emitToAllEvil (event, payload) {
+    const evilPlayers = this.evilPlayers();
+    
+    for (let player of evilPlayers)
+      player.emit(event, payload);
+  }
+
   /**
    * Removes a player from the match
    * @param {Number} playerId 
@@ -162,6 +173,9 @@ class Match {
       this.players[i].role = generatedRoles[i];
       this.players[i].emit("role-set", JSON.stringify({ id: generatedRoles[i].id }));
     }
+
+    const evilPlayersID = this.evilPlayers().map(p => p.id);
+    this.emitToAll("alignment-players", JSON.stringify({ playersID: evilPlayersID }));
   }
 
   /**
