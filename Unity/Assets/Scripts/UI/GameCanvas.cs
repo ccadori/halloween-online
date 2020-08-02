@@ -223,7 +223,10 @@ public class GameCanvas : MonoBehaviour
         {
             return false;
         }
-
+        if (Player.Instance.Role == PlayerRoles.EvilVillager)
+        {
+            return false;
+        }
 
         return true;
     }

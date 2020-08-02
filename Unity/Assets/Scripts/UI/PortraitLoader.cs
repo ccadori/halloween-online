@@ -20,6 +20,7 @@ public class PortraitLoader : MonoBehaviour
 
     private void onReceiveRole(RoleData roleData)
     {
+        Debug.Log(roleData.id);
         image.sprite = Resources.Load<Sprite>("Portraits/" + roleData.id);
     }
 }

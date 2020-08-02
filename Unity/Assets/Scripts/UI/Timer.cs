@@ -9,8 +9,8 @@ public class Timer : MonoBehaviour
 
     public static Timer Instance;
 
-    const float time = 30000;
-    float curTime = 0;
+    const float time = 30;
+    float startTime = 0;
 
     private void Awake()
     {
@@ -36,25 +36,19 @@ public class Timer : MonoBehaviour
         NetworkManager.OnNightEnded -= StartClock;
     }
 
+    private void Update()
+    {
+        UpdateUI(startTime);
+    }
+
     public void StartClock()
     {
-        StopAllCoroutines();
-        StartCoroutine(StartClockRoutine());
+        startTime = Time.time;
     }
 
-    IEnumerator StartClockRoutine()
+    void UpdateUI(float startTime)
     {
-        curTime = time;
-        while (time > 0)
-        {
-            curTime -= 1;
-            UpdateUI();
-            yield return new WaitForSeconds(0.001f);
-        }
-    }
-
-    void UpdateUI()
-    {
-        clockImage.fillAmount = curTime / time;
+        float dif = Time.time - startTime;
+        clockImage.fillAmount = 1 - (dif / time);
     }
 }
