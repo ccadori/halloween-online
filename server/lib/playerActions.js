@@ -69,7 +69,7 @@ class PlayerActions {
   execute() {
     for (let id of this.queue.saves) {
       if (this.queue.deaths.includes(id)) 
-        this.queue.splice(this.queue.deaths.indexOf(id), 1);
+        this.queue.deaths.splice(this.queue.deaths.indexOf(id), 1);
     }
     
     for (let id of this.queue.deaths) {
