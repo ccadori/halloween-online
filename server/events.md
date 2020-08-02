@@ -21,6 +21,7 @@ All game events events are listed in this document.
 - **room-start-error (error message):** Error when starting match
 - **match-started ():** Starting match
 - **role-set ({ id }):** Return the player's role
+- **alignment-players ({ playersID }):** Return all the players of the same alignment role
 - **night-started ():** Night has started
 - **night-ended ():** Night has ended
 - **action-result-seer ({ roleId? }):** Returns the seer's action result

@@ -67,6 +67,23 @@ describe('room', () => {
     expect(player2.client.events[1].event).toBe('test');
   });
 
+  it("Should return only evil players", () => {
+    const currentMatch = new Match(1, null);
+
+    const player = new Player(new Client(), "test");
+    const player2 = new Player(new Client(), "test2");
+    player.role = { alignment: "town" };
+    player2.role = { alignment: "evil" };
+
+    currentMatch.addPlayer(player);
+    currentMatch.addPlayer(player2);
+
+    const evilPlayers = currentMatch.evilPlayers();
+
+    expect(evilPlayers.length).toEqual(1);
+    expect(evilPlayers[0].id).toEqual(player2.id);
+  });
+
   it('Should emit to all except one', () => {
     const currentMatch = new Match(1, null);
 

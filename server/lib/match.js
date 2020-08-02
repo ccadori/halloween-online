@@ -4,14 +4,17 @@ const VoteCycle = require('./voteCycle');
 const Player = require('./player');
 const PlayerActions = require('./playerActions');
 const parser = require('../utils/parser');
+const Matchmaking = require('./matchmaking');
 
 class Match {
   /**
    * @param {Number} id 
    * @param {Player} masterPlayer 
+   * @param {Matchmaking} matchmaking 
    */
-  constructor(id, masterPlayer) {
+  constructor(id, masterPlayer, matchmaking) {
     this.master = masterPlayer;
+    this.matchmaking = matchmaking;
     this.started = false;
     this.id = id;
     this.players = [];
@@ -19,17 +22,10 @@ class Match {
     this.voteCycle = new VoteCycle(this);
     this.playerActions = new PlayerActions(this, this.nightCycle);
 
-    this.emitToAll = this.emitToAll.bind(this);
-    this.removePlayer = this.removePlayer.bind(this);
-    this.addPlayer = this.addPlayer.bind(this);
-    this.findPlayer = this.findPlayer.bind(this);
-    this.generatePlayersRoles = this.generatePlayersRoles.bind(this);
-    this.start = this.start.bind(this);
     this.onRoomStart = this.onRoomStart.bind(this);
     this.onPlayerEnter = this.onPlayerEnter.bind(this);
     this.onPlayerExit = this.onPlayerExit.bind(this);
     this.onNightEnd = this.onNightEnd.bind(this);
-    this.checkVictory = this.checkVictory.bind(this);
     
     if (masterPlayer) this.addPlayer(masterPlayer);
   }
@@ -39,6 +35,10 @@ class Match {
    */
   alivePlayers() {
     return this.players.filter(p => p.alive);
+  }
+
+  evilPlayers() {
+    return this.players.filter(p => p.role.alignment === "evil");
   }
 
   aliveAndOnlinePlayers() {
@@ -111,6 +111,13 @@ class Match {
     });
   }
 
+  emitToAllEvil (event, payload) {
+    const evilPlayers = this.evilPlayers();
+    
+    for (let player of evilPlayers)
+      player.emit(event, payload);
+  }
+
   /**
    * Removes a player from the match
    * @param {Number} playerId 
@@ -166,6 +173,9 @@ class Match {
       this.players[i].role = generatedRoles[i];
       this.players[i].emit("role-set", JSON.stringify({ id: generatedRoles[i].id }));
     }
+
+    const evilPlayersID = this.evilPlayers().map(p => p.id);
+    this.emitToAll("alignment-players", JSON.stringify({ playersID: evilPlayersID }));
   }
 
   /**
@@ -212,7 +222,13 @@ class Match {
    * @param {Player} player 
    */
   onPlayerExit(player) {
-    player.online = false;
+    if (this.started) {
+      player.online = false;
+    }
+    else {
+      this.players.splice(this.players.indexOf(player), 1);
+    }
+
     player.client.removeAllListeners('room-start');
     player.client.removeAllListeners('player-action');
     player.client.removeAllListeners('disconnect');

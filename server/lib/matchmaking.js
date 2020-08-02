@@ -20,7 +20,7 @@ class Matchmaking {
    * @param {Player} masterClient 
    */
   addMatch(masterClient) {
-    const newMatch = new Match(random.generate(5).toUpperCase(), masterClient);
+    const newMatch = new Match(random.generate(5).toUpperCase(), masterClient, this);
     this.matches.push(newMatch);
     
     return newMatch;

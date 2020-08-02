@@ -11,7 +11,7 @@ class PlayerActions {
     this.match = match;
     this.cycles = cycles;
     this.alreadyPlayed = [];
-    this.queue = { deaths: [] };
+    this.queue = { deaths: [], saves: [] };
 
     this.onPlayerAction = this.onPlayerAction.bind(this);
     this.generateReport = this.generateReport.bind(this);
@@ -37,6 +37,7 @@ class PlayerActions {
     {
       case "Werewolf": return this.werewolfAction(player, payload);
       case "Seer": return this.seerAction(player, payload);
+      case "Medic": return this.medicAction(player, payload);
     }
 
     return true;
@@ -52,10 +53,25 @@ class PlayerActions {
   }
 
   /**
+   * @param {Player} player 
+   * @param {*} payload 
+   */
+  medicAction(player, payload) {
+    if (!payload.targetId) return;
+    
+    this.queue.saves.push(payload.targetId);
+  }
+
+  /**
    * Execute all the queued actions
    * @param {Array<Player>} players 
    */
   execute() {
+    for (let id of this.queue.saves) {
+      if (this.queue.deaths.includes(id)) 
+        this.queue.splice(this.queue.deaths.indexOf(id), 1);
+    }
+    
     for (let id of this.queue.deaths) {
       const player = this.match.players.find(p => p.id == id);
       if (player) player.alive = false;
@@ -70,7 +86,7 @@ class PlayerActions {
    * Clear all the executed actions
    */
   reset() {
-    this.queue = { deaths: [] };
+    this.queue = { deaths: [], saves: [] };
   }
 }
 

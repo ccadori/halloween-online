@@ -54,6 +54,26 @@ describe("player actions", () => {
     expect(playerActions.queue.deaths[0]).toEqual(102);
   });
 
+  it ("Should execute the medic action", () => {
+    const medic = { 
+      id: 101, 
+      role: { name: "Medic" }
+    };
+    const villager = { 
+      id: 102, 
+      role: { name: "Villager" }
+    };
+
+    const match = { players: [ medic, villager ] };
+    const cycles = new NightCicle(match);
+    const playerActions = new PlayerActions(match, cycles);
+    
+    playerActions.onPlayerAction(medic, { targetId: 102 });
+
+    expect(playerActions.queue.saves.length).toEqual(1);
+    expect(playerActions.queue.saves[0]).toEqual(102);
+  });
+
   it ("Should execute all queued actions", () => {
     const player1 = { id: 1, alive: true };
     const player2 = { id: 2, alive: true };
