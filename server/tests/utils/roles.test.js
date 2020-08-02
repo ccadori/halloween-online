@@ -6,4 +6,8 @@ describe("Roles", () => {
 
     expect(generatedRoles.length).toEqual(5);
   });
+
+  it("Should have one default role", () => {
+    expect(roles.roleTypes().filter(r => r.default).length).toEqual(1);
+  });
 });

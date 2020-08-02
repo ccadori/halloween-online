@@ -80,6 +80,10 @@ class Roles {
 
     return lodash.shuffle(generatedRoles);
   }
+
+  static roleTypes() {
+    return roles;
+  }
 }
 
 module.exports = Roles;
