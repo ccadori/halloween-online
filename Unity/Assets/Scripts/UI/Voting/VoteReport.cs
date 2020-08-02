@@ -50,7 +50,7 @@ public class VoteReport : MonoBehaviour
             newEntry.SetupInformation(playerId);
             newEntry.gameObject.SetActive(true);
             canvas.enabled = true;
-            playerVoteEntryList.Add(playerVotedEntry);
+            playerVoteEntryList.Add(newEntry);
         }
         else
         {
