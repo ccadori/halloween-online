@@ -18,14 +18,14 @@ const roles = [
     name: "Werewolf", 
     evil: true,
     required: true,
-    populationFrequency: 0.3,
+    populationFrequency: 0.2,
     alignment: "evil",
   },
   { 
     id: 3, 
     name: "Evil Villager",
     required: false,
-    populationFrequency: 0.3,
+    populationFrequency: 0.2,
     alignment: "evil",
   },
   { 
