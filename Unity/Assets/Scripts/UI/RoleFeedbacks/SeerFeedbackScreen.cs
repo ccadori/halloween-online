@@ -24,7 +24,8 @@ public class SeerFeedbackScreen : MonoBehaviour
     private void OnSeerResult(SeerResultData seerResultData)
     {
         roleIconImage.sprite = Resources.Load<Sprite>("Portraits/" + seerResultData.roleId);
-        descriptionText.text = ""; //TODO: Criar um texto correto
+        string className = JsonUtility.FromJson<RoleDescriptionData>(Resources.Load<TextAsset>("Descriptions/role-descriptions").text).roles[seerResultData.roleId].name;
+        descriptionText.text = "Este jogador é um " + className;
         canvas.enabled = true;
     }
 }

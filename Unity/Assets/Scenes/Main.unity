@@ -5709,7 +5709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 902767932}
-  descriptionText: {fileID: 0}
+  descriptionText: {fileID: 170664927}
   roleIconImage: {fileID: 862580399}
 --- !u!1 &905626723
 GameObject:
