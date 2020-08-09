@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerVotedEntry : MonoBehaviour
 {
-    public Text playerNameText;
+    public TextMeshProUGUI playerNameText;
     public void SetupInformation(string playerId)
     {
         if (!PlayerManager.Instance.playerList.ContainsKey(playerId))

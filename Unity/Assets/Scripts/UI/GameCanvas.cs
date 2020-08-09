@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,23 +14,23 @@ public class GameCanvas : MonoBehaviour
 
     [Header("Night")]
     [SerializeField] PlayerListEntryUI night_PlayerListEntryPrefab;
-    [SerializeField] CanvasGroup night_CanvasGroup;
-    [SerializeField] CanvasGroup night_PlayingCanvasGroup;
-    [SerializeField] CanvasGroup night_WaitingCanvasGroup;
+    [SerializeField] Canvas night_CanvasGroup;
+    [SerializeField] Canvas night_PlayingCanvasGroup;
+    [SerializeField] Canvas night_WaitingCanvasGroup;
     [SerializeField] List<PlayerListEntryUI> night_playerList = new List<PlayerListEntryUI>();
     [SerializeField] Transform night_PlayerListParent;
     [SerializeField] GameObject night_DeadScreen;
 
     [Header("Day")]
     [SerializeField] PlayerListEntryUI day_PlayerListEntryPrefab;
-    [SerializeField] CanvasGroup day_CanvasGroup;
-    [SerializeField] CanvasGroup day_PlayingCanvasGroup;
-    [SerializeField] CanvasGroup day_WaitingCanvasGroup;
+    [SerializeField] Canvas day_CanvasGroup;
+    [SerializeField] Canvas day_PlayingCanvasGroup;
+    [SerializeField] Canvas day_WaitingCanvasGroup;
     [SerializeField] List<PlayerListEntryUI> day_playerList = new List<PlayerListEntryUI>();
     [SerializeField] Transform day_PlayerListParent;
     [SerializeField] GameObject day_DeadScreen;
     [SerializeField] Button day_confirmButton;
-    [SerializeField] Text day_confirmButtonText;
+    [SerializeField] TextMeshProUGUI day_confirmButtonText;
 
 
 
@@ -123,11 +124,11 @@ public class GameCanvas : MonoBehaviour
             isFirstNight = false;
             populateNightPlayerList();
         }
-        day_PlayingCanvasGroup.alpha = 0;
-        night_CanvasGroup.alpha = 1;
-        day_CanvasGroup.alpha = 0;
-        night_PlayingCanvasGroup.alpha = 1;
-        night_WaitingCanvasGroup.alpha = 0;
+        day_PlayingCanvasGroup.enabled = false;
+        night_CanvasGroup.enabled = true;
+        day_CanvasGroup.enabled = false;
+        night_PlayingCanvasGroup.enabled = true;
+        night_WaitingCanvasGroup.enabled = false;
 
         if (!Player.Instance.Alive)
             night_DeadScreen.SetActive(true);
@@ -135,8 +136,8 @@ public class GameCanvas : MonoBehaviour
 
     public void ConfirmAction()
     {
-        night_PlayingCanvasGroup.alpha = 0;
-        night_WaitingCanvasGroup.alpha = 1;
+        night_PlayingCanvasGroup.enabled = false;
+        night_WaitingCanvasGroup.enabled = true;
     }
 
     void populateDayPlayerList()
@@ -185,10 +186,10 @@ public class GameCanvas : MonoBehaviour
             isFirstNight = false;
             populateDayPlayerList();
         }
-        night_CanvasGroup.alpha = 0;
-        day_CanvasGroup.alpha = 1;
-        day_PlayingCanvasGroup.alpha = 1;
-        day_WaitingCanvasGroup.alpha = 0;
+        night_CanvasGroup.enabled = false;
+        day_CanvasGroup.enabled = true;
+        day_PlayingCanvasGroup.enabled = true;
+        day_WaitingCanvasGroup.enabled = false;
 
         if(!Player.Instance.Alive)
             day_DeadScreen.SetActive(true);
@@ -196,8 +197,8 @@ public class GameCanvas : MonoBehaviour
 
     public void ConfirmVote()
     {
-        day_PlayingCanvasGroup.alpha = 0;
-        day_WaitingCanvasGroup.alpha = 1;
+        day_PlayingCanvasGroup.enabled = false;
+        day_WaitingCanvasGroup.enabled = true;
     }
 
     private void OnPlayerDied()

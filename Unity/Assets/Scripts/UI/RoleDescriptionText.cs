@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,7 @@ public class RoleDescriptionText : MonoBehaviour
 {
     public RoleDescriptionData roleDescriptionData;
 
-    [SerializeField] Text roleDescriptionText;
+    [SerializeField] TextMeshProUGUI roleDescriptionText;
 
     private void OnEnable()
     {

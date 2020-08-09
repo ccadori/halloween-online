@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerListEntryUI : MonoBehaviour
 {
-    public Text nameText;
+    public TextMeshProUGUI nameText;
     public string playerID;
     public Button button;
     public GameObject selectionHighlight;

@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class NameSelection : MonoBehaviour
 {
-    [SerializeField] InputField nameInputField;
+    [SerializeField] TMP_InputField nameInputField;
     [SerializeField] Button sendNameButton;
     [SerializeField] Canvas loginScreen;
     [SerializeField] Canvas matchMakingScreen;

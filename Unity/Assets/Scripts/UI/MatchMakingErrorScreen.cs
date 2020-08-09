@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MatchMakingErrorScreen : MonoBehaviour
 {
     [SerializeField] Canvas canvas;
-    [SerializeField] Text text;
+    [SerializeField] TextMeshProUGUI text;
 
     private void OnEnable()
     {
